@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <TextView
+        android:layout_x="40dip"
+        android:layout_y="30dip"
+        android:id="@+id/textBallot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="抽签" />
+<Button 
+        android:layout_x="95dip"
+        android:layout_y="90dip"
+        android:id="@+id/BnChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选取抽签者姓名"/>
+<TextView 
+        android:layout_x="40dip"
+        android:layout_y="150dip"
+        android:id="@+id/EditBallot"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
+<Button 
+        android:layout_x="50dip"
+        android:layout_y="220dip"
+        android:id="@+id/BnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"/>
+<Button 
+        android:layout_x="210dip"
+        android:layout_y="220dip"
+        android:id="@+id/BnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:layout_below="@id/EditBallot"/>
+
+</LinearLayout>
