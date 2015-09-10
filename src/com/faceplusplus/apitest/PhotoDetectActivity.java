@@ -38,6 +38,7 @@ public class PhotoDetectActivity extends Activity {
 	Button button = null;
 	FaceDetecter detecter = null;
 	private ImageView image;
+	private Bitmap luckybitmap;
 
 	private ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 

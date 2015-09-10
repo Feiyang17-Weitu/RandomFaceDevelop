@@ -1,20 +1,56 @@
 <resources>
 
-    <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    -->
-    <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        -->
+    <style name="TitleBar" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">59dp</item>
+        <item name="android:background">@drawable/black</item>
+        <item name="android:layout_alignParentTop">true</item>
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="TitleBarView" >
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_alignParentTop">true</item>
+    </style>
+
+    <style name="Title">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="TitleView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginLeft">300dp</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TitleBarRightIcon" parent="TitleBarIcon">
+        <item name="android:layout_marginLeft">300dp</item>
+    </style>
+    <style name="TitleBarLeftIcon_back" parent="TitleBarIcon">
+        <item name="android:layout_marginRight">300dp</item>
+        <item name="android:src">@drawable/navigation_back</item>
+    </style>
+    <style name="TitleBarLeftIcon_list" parent="TitleBarIcon">
+        <item name="android:layout_marginRight">300dp</item>
+        <item name="android:src">@drawable/list</item>
+    </style>
+    <style name="TitleBarIcon">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+    <style name="EditEnter">
+        <item name="android:padding">5dp</item>
+        <item name="android:background">@drawable/bg_edittext</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#AAAAAA</item>
+
     </style>
 
 </resources>
