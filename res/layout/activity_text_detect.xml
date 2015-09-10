@@ -39,12 +39,15 @@
             style="@style/EditEnter"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:hint="点击回车生成一个选项"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:ems="10" />
 
         <GridView
             android:id="@+id/gridView1"
             android:layout_width="fill_parent"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_margin="10dp"
             android:background="#EFDFDF"
             android:columnWidth="90dp"
@@ -78,28 +81,7 @@
             </EditText>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="请输入主题" />
-
-            <EditText
-                android:id="@+id/editText2"
-                style="@style/EditEnter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10" >
-
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
