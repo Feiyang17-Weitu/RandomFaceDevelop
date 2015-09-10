@@ -3,13 +3,13 @@
     android:id="@+id/Content_Layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#fff"
-    android:gravity="center" >
+    android:background="#fff" >
 
     <RelativeLayout
         android:id="@+id/title_bar"
         style="@style/TitleBar"
-        android:layout_alignParentTop="true" >
+        android:layout_width="match_parent"
+        android:layout_height="59dp" >
 
         <ImageView
             android:id="@+id/btnDrawer"
@@ -21,34 +21,34 @@
         <TextView
             android:id="@+id/bar_title"
             style="@style/Title"
-            android:layout_marginRight="10dp"
             android:text="简易抽签"
             android:textColor="#fe448a" />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical"
-        android:layout_marginTop="59dp"
-        android:singleLine="true" >
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="20dp"
+        android:padding="6dp" >
 
         <EditText
             android:id="@+id/text"
             style="@style/EditEnter"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:ems="10"
             android:hint="点击回车生成一个选项"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:ems="10" />
+            android:singleLine="true" />
 
         <GridView
             android:id="@+id/gridView1"
             android:layout_width="fill_parent"
             android:layout_height="150dp"
-            android:layout_margin="10dp"
+            android:layout_alignLeft="@id/text"
+            android:layout_below="@id/text"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="6dp"
             android:background="#EFDFDF"
             android:columnWidth="90dp"
             android:gravity="center"
@@ -58,68 +58,53 @@
             android:verticalSpacing="5dp" >
         </GridView>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp" >
+            android:layout_height="40dp"
+            android:layout_below="@+id/gridview1"
+            android:layout_marginTop="200dp" >
 
             <TextView
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="请选择需要抽出的个数" />
+                android:gravity="bottom"
+                android:singleLine="true"
+                android:text="请选择需要抽出的个数:" />
 
             <EditText
                 android:id="@+id/editText1"
                 style="@style/EditEnter"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
+                android:layout_marginLeft="10dp"
+                android:gravity="bottom"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10" >
+                android:inputType="number"
+                android:layout_toRightOf="@id/textView1"
+                android:textColor="#fe448a" />
+        </RelativeLayout>
 
-                <requestFocus />
-            </EditText>
-        </LinearLayout>
-
-
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal" >
+            android:layout_height="80dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="350dp" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="本次抽选结果：" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="李德才" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
+            <ImageView
                 android:id="@+id/button1"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="开始抽签" />
+                android:src="@drawable/arrow2"
+                android:layout_marginRight="50dp" />
 
-            <Button
+            <ImageView
                 android:id="@+id/button2"
-                android:layout_width="wrap_content"
+                android:layout_toRightOf="@id/button1"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="清空" />
+                android:src="@drawable/clean" />
 
-        </LinearLayout>
-
-    </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

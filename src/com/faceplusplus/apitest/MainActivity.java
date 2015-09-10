@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,9 +11,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.faeplusplusRollOver.RollActivity;
@@ -36,7 +33,7 @@ public class MainActivity extends Activity {
 		// if(logintips.getString(key, defValue))
 		// {
 		// 启动提示
-		final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(
+/*		final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(
 				this);
 		builder.setTitle("告别选择困难，就在今天~\n只需拍张照，看看谁是幸运儿！");
 		LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(
@@ -44,6 +41,7 @@ public class MainActivity extends Activity {
 		builder.setView(linearLayout);
 		final CheckBox nomore = (CheckBox) findViewById(R.id.nomore);
 		builder.setPositiveButton("确定", null);
+		builder.create().show();*/
 
 		/*
 		 * builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
@@ -56,7 +54,7 @@ public class MainActivity extends Activity {
 		 * editor.putString("notips", "0"); editor.commit(); } } });
 		 * builder.create().show(); }
 		 */
-		builder.create().show();
+		
 		// 启动提示End
 		ImageView MainButton1 = (ImageView) findViewById(R.id.imageView1);
 		ImageView MainButton2 = (ImageView) findViewById(R.id.imageView2);

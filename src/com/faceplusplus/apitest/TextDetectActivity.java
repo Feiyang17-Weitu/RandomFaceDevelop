@@ -2,27 +2,44 @@ package com.faceplusplus.apitest;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.faceplusplus.shake.ShakeListener;
+import com.faceplusplus.shake.ShakeListener.OnShakeListenerCallBack;
 import com.megvii.apitest.R;
+
 
 public class TextDetectActivity extends Activity {
 
 	private ArrayList<HashMap<String, String>> textEditItem = new ArrayList<HashMap<String, String>>();
 	private SimpleAdapter simpleAdapter;     //适配器
 	private GridView gridView1;
-	private EditText editText;
+	private EditText editText1;
+	private EditText editText2;
+	//private EditText editText3;	
+	private ImageView btnBeginDetect;
+	//private TextView detectResult;
+	private ImageView btnClear;
+	private ShakeListener mShakeListener = null;
+	private OnShakeListenerCallBack CBackShakeListener = null;
+	private String strDetectResult;
+	
 	//private HashMap<String, String> map;
 	
 	@Override
@@ -32,24 +49,26 @@ public class TextDetectActivity extends Activity {
 		setContentView(R.layout.activity_text_detect);
 		
 		//获取grideView控件对象
-        gridView1 = (GridView) findViewById(R.id.gridView1);
-        
-        //Button btnBeginDetectButton = (Button) findViewById(R.id.begin);
+        gridView1 = (GridView) findViewById(R.id.gridView1);        
+        editText2 = (EditText) findViewById(R.id.editText1);
+        //editText3 = (EditText) findViewById(R.id.editText2);
+        //detectResult = (TextView) findViewById(R.id.result);
+        btnClear = (ImageView) findViewById(R.id.button2);
         
         //获取编辑框对象
-        editText = (EditText) findViewById(R.id.text);
-        editText.setOnKeyListener(new OnKeyListener() {
+        editText1 = (EditText) findViewById(R.id.text);
+        editText1.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) 
 				{
 					HashMap<String, String> map = new HashMap<String, String>();
-					String strTmp = editText.getText().toString();
+					String strTmp = editText1.getText().toString();
 					if (!strTmp.equals("")) 
 					{
 						if(textEditItem.size() == 10) { //第一张为默认图片
 							Toast.makeText(TextDetectActivity.this, "最多只能添加15个", Toast.LENGTH_SHORT).show();
-							editText.setText("");
+							editText1.setText("");
 							return false;
 						}
 						else {
@@ -62,7 +81,8 @@ public class TextDetectActivity extends Activity {
 					        gridView1.setAdapter(simpleAdapter);
 					        simpleAdapter.notifyDataSetChanged();
 						}
-						editText.setText("");
+						editText1.setText("");
+						editText1.setFocusable(true);
 						return true;
 					}		
 				}
@@ -82,13 +102,143 @@ public class TextDetectActivity extends Activity {
 		    }      
 		});
 		
-/*		btnBeginDetectButton.setOnClickListener(new OnClickListener() {
-			
+		btnBeginDetect = (ImageView) findViewById(R.id.button1);
+		btnBeginDetect.setOnClickListener(new DetectClickListener()); 
+		
+		btnClear.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//Random 
+//				if (!detectResult.getText().toString().equals("")) {
+//					detectResult.setText("");
+//				}
+				if (textEditItem.size() != 0) {
+					textEditItem.clear();
+					simpleAdapter.notifyDataSetChanged();
+				}
+				if (!editText2.getText().toString().equals("")) {
+					editText2.setText("");
+				}
+				/*if (!editText3.getText().toString().equals("")) {
+					editText3.setText("");
+				}*/
+				return;
 			}
-		});*/
+		});
+
+		CBackShakeListener = new OnShakeListenerCallBack() {
+		 public void onShake() {
+			 if (editText2.getText().toString().equals("")) {
+					Toast.makeText(getApplication(), "请完善信息", Toast.LENGTH_LONG).show();
+					return;
+				} 
+				if (textEditItem.size() == 0) {
+					Toast.makeText(getApplication(), "备选人数不能为空", Toast.LENGTH_LONG).show();
+					return;
+				}
+				int selectNum = Integer.valueOf(editText2.getText().toString()).intValue();
+				if (textEditItem.size() < selectNum) {
+					Toast.makeText(getApplication(), "备选人数过少", Toast.LENGTH_LONG).show();
+					return;
+				}
+				/*if (editText3.getText().toString().equals("")) {
+					Toast.makeText(getApplication(), "主题不能为空", Toast.LENGTH_LONG).show();
+				}*/
+				Random random = new Random();
+				int iIndex = random.nextInt(textEditItem.size() - 1);
+				strDetectResult = textEditItem.get(iIndex).get("itemText");
+				
+	            AlertDialog.Builder builder = new AlertDialog.Builder(TextDetectActivity.this);
+	            //    设置Title的内容
+	            builder.setTitle("筛选结果");
+	            //    设置Content来显示一个信息
+	            builder.setMessage(strDetectResult);
+	            //    设置一个PositiveButton
+	            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+	                @Override
+	                public void onClick(DialogInterface dialog, int which)
+	                {               
+	                	dialog.dismiss();
+	                }
+	            });
+	            builder.show();
+		 }
+		};
+		
+		initShake();
 	}
+	
+	class DetectClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+        	
+			if (editText2.getText().toString().equals("")) {
+				Toast.makeText(getApplication(), "请完善信息", Toast.LENGTH_LONG).show();
+				return;
+			} 
+			if (textEditItem.size() == 0) {
+				Toast.makeText(getApplication(), "备选人数不能为空", Toast.LENGTH_LONG).show();
+				return;
+			}
+			int selectNum = Integer.valueOf(editText2.getText().toString()).intValue();
+			if (textEditItem.size() < selectNum) {
+				Toast.makeText(getApplication(), "备选人数过少", Toast.LENGTH_LONG).show();
+				return;
+			}
+			/*if (editText3.getText().toString().equals("")) {
+				Toast.makeText(getApplication(), "主题不能为空", Toast.LENGTH_LONG).show();
+				return;
+			}*/
+			Random random = new Random();
+			int iIndex = random.nextInt(textEditItem.size() - 1);
+			strDetectResult = textEditItem.get(iIndex).get("itemText");
+			
+            AlertDialog.Builder builder = new AlertDialog.Builder(TextDetectActivity.this);
+            //    设置Title的内容
+            builder.setTitle("筛选结果");
+            //    设置Content来显示一个信息
+            builder.setMessage(strDetectResult);
+            //    设置一个PositiveButton
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {               
+                	dialog.dismiss();
+                }
+            });
+
+            //    显示出该对话框
+            builder.show();
+        }
+    }
+	
+	private void initShake() {
+		
+		mShakeListener = new ShakeListener(this);
+		mShakeListener.setOnShakeListener(CBackShakeListener);
+	}
+	
+	public void onResume() {
+		super.onResume();
+		mShakeListener.start();
+	}
+
+	@Override
+	public void onPause() {
+		mShakeListener.stop();
+		super.onPause();
+	}
+
+	@Override
+	public void onStop() {
+		mShakeListener.stop();
+		super.onStop();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		mShakeListener.stop();
+		super.onDestroy();
+	}
+	
 }
