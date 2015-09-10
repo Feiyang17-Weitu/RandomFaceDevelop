@@ -102,10 +102,16 @@ public class RollActivity extends Activity {
 		int x,y,width,height = 0;
 		for (int i = 0; i < faceinfos.length; i++) {
 			// Bitmap tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
-			x = (int)(oribitmap.getWidth()*faceinfos[i].left);
-			y = (int)(oribitmap.getHeight()*faceinfos[i].top);
-			width = (int)(oribitmap.getWidth()*(faceinfos[i].right-faceinfos[i].left));
-			height = (int)(oribitmap.getHeight()*(faceinfos[i].bottom-faceinfos[i].top));
+			x = (int)(oribitmap.getWidth() * ((faceinfos[i].left-(faceinfos[i].right-faceinfos[i].left)/3)>0?(faceinfos[i].left-(faceinfos[i].right-faceinfos[i].left)/3):0));
+			y = (int)(oribitmap.getHeight() * ((faceinfos[i].top-(faceinfos[i].bottom-faceinfos[i].top)/2)>0?(faceinfos[i].top-(faceinfos[i].bottom-faceinfos[i].top)/2):0));
+            width = (int)(oribitmap.getWidth() * (faceinfos[i].right-faceinfos[i].left)*5/3);
+			height = (int)(oribitmap.getHeight() * (faceinfos[i].bottom-faceinfos[i].top)*2);
+			if(x + width > oribitmap.getWidth()){
+				width = oribitmap.getWidth() - x;
+			}
+			if(y + height > oribitmap.getHeight()){
+				height = oribitmap.getHeight() - y;
+			}
 			Bitmap tmp = Bitmap.createBitmap(oribitmap, x,y, width,height);
 			resbitmap.add(tmp);
 		}
@@ -135,7 +141,6 @@ public class RollActivity extends Activity {
 			// REQUEST_GET_PHOTO);
 			break;
 		case R.id.btnnext:
-			OnDetect();
 			if (resbitmap.size()<=0) {
 				break;
 			}
@@ -150,7 +155,7 @@ public class RollActivity extends Activity {
 	}
 	
 	public void OnDetect(){
-		
+		Toast.makeText(RollActivity.this, "正在识别图片,请稍后······", Toast.LENGTH_LONG).show();
 		System.out.println("start detect");
 		detectHandler.post(new Runnable() {
 
@@ -175,7 +180,7 @@ public class RollActivity extends Activity {
 					}
 				}
 				resbitmap = getFaceResBitmap(faceinfo,curBitmap);
-                
+				Toast.makeText(RollActivity.this, "识别成功,可以翻牌了！！！", Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -200,6 +205,7 @@ public class RollActivity extends Activity {
 						curBitmap.recycle();
 					curBitmap = getScaledBitmap(str, 600);
 					imageView.setImageBitmap(curBitmap);
+					OnDetect();
 				}
 				break;
 			}

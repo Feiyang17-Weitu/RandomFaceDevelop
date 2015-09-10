@@ -56,20 +56,19 @@ public class RollActivityTurn extends Activity {
 		grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				// TODO Auto-generated method stub
 				// imgView.setImageResource(R.drawable.test1);
-				
-				Toast.makeText(getApplicationContext(), "This is " + arg3,Toast.LENGTH_LONG).show();
 				Animation animation = AnimationUtils.loadAnimation(RollActivityTurn.this, R.anim.back_scale);
 				arg1.startAnimation(animation);
 
 				Animation animation2 = AnimationUtils.loadAnimation(RollActivityTurn.this, R.anim.front);
 				arg1.startAnimation(animation2);
 				
+				int i = (int)(Math.random()*resbitmap.size());
 				
-				((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(arg2));
+				((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(i));
+				resbitmap.remove(i);
 			}
 		});
 	}
