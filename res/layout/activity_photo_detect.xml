@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_home"
+    android:background="#fff"
     tools:context=".PhotoDetectActivity" >
 
         <RelativeLayout
@@ -14,30 +14,22 @@
 	            style="@style/TitleBarLeftIcon_back"
 	            android:layout_height="wrap_content"
 	            android:layout_width="wrap_content"
-	            android:layout_marginLeft="10dp"
+	            android:padding="10dp"
 	            />
 	        <TextView
 	            android:id="@+id/bar_title"
 	            style="@style/Title"
-	            android:text="拍拍选"
+	            android:text="你拍我选"
 	            android:layout_marginRight="10dp"
+	            android:textColor="#fe448a"
 	            />
-
-	        <ImageView
-	            android:id="@+id/add_album"
-	            style="@style/TitleBarRightIcon"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentBottom="true"
-	            android:src="@drawable/camera_icon" />
-
 	    </RelativeLayout>
 
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="280dp" 
+        android:layout_height="320dp" 
         android:layout_marginTop="59dp"
         android:layout_alignParentTop="true">
 
@@ -53,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/transparent" />
+            android:src="@drawable/test_people" />
 
     </RelativeLayout>
 
@@ -63,73 +55,46 @@
         android:padding="10dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="200dp"
-        >
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请选择人数"/>
-
-        <EditText
-            android:id="@+id/editText1"
-            style="@style/EditEnter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
-        
-    </LinearLayout>
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="150dp"
         >
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请输入题目"/>
-
-        <EditText
-            android:id="@+id/editText2"
-            style="@style/EditEnter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10" >
-
-            <requestFocus />
-        </EditText>
         
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
         android:orientation="horizontal" >
 
-        <Button
+        <ImageView
             android:id="@+id/pick"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="onClick"
+            android:src="@drawable/camera4"
             android:text="选择图片" />
 
-        <Button
+        <ImageView
             android:id="@+id/detect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_weight="1"
             android:onClick="onClick"
+            android:src="@drawable/arrow2"
             android:text="检测" />
         
+        <ImageView
+            android:id="@+id/btnShake"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:src="@drawable/share"
+            android:text="摇一摇" /> 
     </LinearLayout>
 
     <LinearLayout
