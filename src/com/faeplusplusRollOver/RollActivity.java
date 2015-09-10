@@ -58,7 +58,7 @@ public class RollActivity extends Activity {
 		
 
 		imageView = (ImageView) findViewById(R.id.imageview);
-		curBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.test_people);
+		curBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.demo);
 		imageView.setImageBitmap(curBitmap);
 		
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
@@ -69,6 +69,8 @@ public class RollActivity extends Activity {
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 
 		ImageLoader.getInstance().init(config);
+		
+		OnDetect();
 	}
 
 
@@ -76,25 +78,17 @@ public class RollActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
-	}
-
-	public static Bitmap getFaceInfoBitmap(Face[] faceinfos, Bitmap oribitmap) {
-		Bitmap tmp;
-		tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
-
-		Canvas localCanvas = new Canvas(tmp);
-		Paint localPaint = new Paint();
-		localPaint.setColor(0xffffff00);
-		localPaint.setStyle(Paint.Style.STROKE);
-		for (Face localFaceInfo : faceinfos) {
-			RectF rect = new RectF(oribitmap.getWidth() * localFaceInfo.left,
-					oribitmap.getHeight() * localFaceInfo.top,
-					oribitmap.getWidth() * localFaceInfo.right,
-					oribitmap.getHeight() * localFaceInfo.bottom);
-			localCanvas.drawRect(rect, localPaint);
+		for(int i=0;i<resbitmap.size();i++){
+			if(!resbitmap.get(i).isRecycled()){
+				resbitmap.get(i).recycle();
+			}
 		}
-		return tmp;
+		
+		if ((curBitmap != null) && (!curBitmap.isRecycled()))
+			curBitmap.recycle();
+		
 	}
+
 
 	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos, Bitmap oribitmap) {
 		ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();

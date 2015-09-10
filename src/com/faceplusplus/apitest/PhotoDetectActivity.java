@@ -146,6 +146,15 @@ public class PhotoDetectActivity extends Activity {
 		mShakeListener.stop();
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
+		//释放图片资源
+		for(int i=0;i<resbitmap.size();i++){
+			if(!resbitmap.get(i).isRecycled()){
+				resbitmap.get(i).recycle();
+			}
+		}
+		if ((curBitmap != null) && (!curBitmap.isRecycled()))
+			curBitmap.recycle();
+		
 	}
 
 	public static Bitmap getFaceInfoBitmap(Face[] faceinfos, Bitmap oribitmap) {

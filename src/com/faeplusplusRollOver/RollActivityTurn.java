@@ -65,10 +65,13 @@ public class RollActivityTurn extends Activity {
 				Animation animation2 = AnimationUtils.loadAnimation(RollActivityTurn.this, R.anim.front);
 				arg1.startAnimation(animation2);
 				
-				int i = (int)(Math.random()*resbitmap.size());
 				
-				((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(i));
-				resbitmap.remove(i);
+				if (resbitmap.size()>0) {
+					int i = (int)(Math.random()*resbitmap.size());
+					((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(i));
+					resbitmap.remove(i);
+				}
+				
 			}
 		});
 	}
