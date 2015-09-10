@@ -8,7 +8,6 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -44,7 +43,7 @@ public class RollActivityTurn extends Activity {
 		List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < resbitmap.size(); i++) {
 			Map<String, Object> listItem = new HashMap<String, Object>();
-			listItem.put("image", R.drawable.cardback);
+			listItem.put("image", R.drawable.cardback2);
 			listItems.add(listItem);
 		}
 
