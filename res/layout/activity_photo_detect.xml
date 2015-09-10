@@ -130,13 +130,6 @@
             android:onClick="onClick"
             android:text="检测" />
         
-        <Button
-            android:id="@+id/btnShake"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="onClick"
-            android:text="摇一摇" />
     </LinearLayout>
 
     <LinearLayout

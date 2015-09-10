@@ -2,6 +2,7 @@ package com.faceplusplus.apitest;
 
 import java.util.ArrayList;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,7 +22,8 @@ import android.widget.Toast;
 
 import com.faceplusplus.api.FaceDetecter;
 import com.faceplusplus.api.FaceDetecter.Face;
-import com.faceplusplus.shake.TestActivity;
+import com.faceplusplus.shake.ShakeListener;
+import com.faceplusplus.shake.ShakeListener.OnShakeListenerCallBack;
 import com.megvii.apitest.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -38,7 +40,8 @@ public class PhotoDetectActivity extends Activity {
 	Button button = null;
 	FaceDetecter detecter = null;
 	private ImageView image;
-	private Bitmap luckybitmap;
+	private ShakeListener mShakeListener = null;
+	private boolean isrunning = false;
 
 	private ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 
@@ -74,33 +77,74 @@ public class PhotoDetectActivity extends Activity {
 				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
 				.diskCacheSize(100 * 1024 * 1024).diskCacheFileCount(300)
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
-
 		ImageLoader.getInstance().init(config);
+		
+		initShake();
 	}
 
 	public class GetFaceLocation implements Runnable {
 		@Override
-		public void run() {
-			for (int i = 0; i < 10; i++) {
-				try {
-					Thread.sleep(500);
-					Message message = new Message();
-					message.what = i % resbitmap.size();
-
-					mHandler.sendMessage(message);
-				} catch (InterruptedException e) {
+		public void run(){
+			isrunning = true;
+			System.out.println("thread start!!");
+        	try {
+        		for(int i=0;i<10;i++){
+        			Thread.sleep(300);
+					Message message=new Message();  
+					message.what = i%(resbitmap.size()-1);
+					mHandler.sendMessage(message); 
+	                }
+        		Message message=new Message();  
+				message.what = resbitmap.size()-1;
+				mHandler.sendMessage(message);
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			System.out.println("thread stop!!");
-			// TODO Auto-generated method stub
+        	isrunning = false;
+            System.out.println("thread stop!!"); 
+            // TODO Auto-generated method stub  
+             
+        }  
+	}
 
-		}
+	private void initShake() {
+		
+		mShakeListener = new ShakeListener(this);
+		mShakeListener.setOnShakeListener(shakeListener);
+	}
+
+ OnShakeListenerCallBack shakeListener = new OnShakeListenerCallBack() {
+	 public void onShake() {
+		 OnDetect();
+		 System.out.println("Onshake  to detect");
+			
+		 
+	 }
+	};
+	
+	
+	
+	public void onResume() {
+		super.onResume();
+		mShakeListener.start();
 	}
 
 	@Override
+	public void onPause() {
+		mShakeListener.stop();
+		super.onPause();
+	}
+
+	@Override
+	public void onStop() {
+		mShakeListener.stop();
+		super.onStop();
+	}
+	
+	@Override
 	protected void onDestroy() {
+		mShakeListener.stop();
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
 	}
@@ -123,15 +167,13 @@ public class PhotoDetectActivity extends Activity {
 		return tmp;
 	}
 
-	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos,
-			Bitmap backbitmap, Bitmap picsize) {
+	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos,Bitmap backbitmap, Bitmap picsize) {
 		ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 
 		for (int i = 0; i < faceinfos.length; i++) {
 
 			// Bitmap tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
-			Bitmap tmp = Bitmap.createScaledBitmap(backbitmap,
-					picsize.getWidth(), picsize.getHeight(), false);
+			Bitmap tmp = Bitmap.createScaledBitmap(backbitmap,picsize.getWidth(), picsize.getHeight(), false);
 
 			Canvas localCanvas = new Canvas(tmp);
 			Paint localPaint = new Paint();
@@ -167,99 +209,89 @@ public class PhotoDetectActivity extends Activity {
 			image.setImageBitmap(null);
 			startActivityForResult(new Intent(PhotoDetectActivity.this,
 					SelectPictureActivity.class), REQUEST_GET_PHOTO);
-			// startActivityForResult(new
-			// Intent("android.intent.action.PICK",MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
-			// REQUEST_GET_PHOTO);
+
 			break;
-		case R.id.btnShake:
-			startActivity(new Intent(PhotoDetectActivity.this,
-					TestActivity.class));
 		case R.id.detect:
-			detectHandler.post(new Runnable() {
+			OnDetect();
+			break;
+			default:
+				break;
+		}
+	}
+	
+	public void OnDetect(){
+		if (!isrunning) {
+			isrunning = true;
+		}else {
+			Toast.makeText(PhotoDetectActivity.this, "正在筛选", Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		System.out.println("start detect");
+		detectHandler.post(new Runnable() {
 
-				@Override
-				public void run() {
+			@Override
+			public void run() {
 
-					Face[] faceinfo = detecter.findFaces(curBitmap);// 进行人脸检测
-					if (faceinfo == null) {
-						runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								Toast.makeText(PhotoDetectActivity.this,
-										"未发现人脸信息", Toast.LENGTH_LONG).show();
-							}
-						});
-						return;
-					}
-
-					final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
-					BitmapDrawable draw = (BitmapDrawable) getResources()
-							.getDrawable(R.drawable.a111);
-					Bitmap tmp = draw.getBitmap();
-					resbitmap = getFaceResBitmap(faceinfo, tmp, curBitmap);
+				Face[] faceinfo = detecter.findFaces(curBitmap);// 进行人脸检测
+				if (faceinfo == null) {
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
-							imageView.setImageBitmap(bit);
-							new Thread(new GetFaceLocation()).start();
-
-							System.gc();
+							Toast.makeText(PhotoDetectActivity.this,
+									"未发现人脸信息", Toast.LENGTH_LONG).show();
 						}
 					});
+					return;
 				}
-			});
 
-		}
+				final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
+				
+				BitmapDrawable draw = (BitmapDrawable) getResources().getDrawable(R.drawable.a111);
+				Bitmap tmp = draw.getBitmap();
+				
+				for(int i=0;i<resbitmap.size();i++){
+					if(!resbitmap.get(i).isRecycled()){
+						resbitmap.get(i).recycle();
+					}
+				}
+				resbitmap.clear();
+				resbitmap = getFaceResBitmap(faceinfo, tmp, curBitmap);
+				
+				
+				int i = (int)(Math.random()*(resbitmap.size()));
+				int x = (int)(curBitmap.getWidth() * ((faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/3)>0?(faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/3):0));
+				int y = (int)(curBitmap.getHeight() * ((faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2)>0?(faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2):0));
+                int width = (int)(curBitmap.getWidth() * (faceinfo[i].right-faceinfo[i].left)*5/3);
+				int height = (int)(curBitmap.getHeight() * (faceinfo[i].bottom-faceinfo[i].top)*2);
+				if(x + width > curBitmap.getWidth()){
+					width = curBitmap.getWidth() - x;
+				}
+				if(y + height > curBitmap.getHeight()){
+					height = curBitmap.getHeight() - y;
+				}
+				Bitmap luckybitmap = Bitmap.createBitmap(curBitmap, x,y, width,height);
+                
+                resbitmap.add(luckybitmap);
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						imageView.setImageBitmap(bit);
+						new Thread(new GetFaceLocation()).start();
+						System.gc();
+					}
+				});
+			}
+		});
 	}
 
-	/*
-	 * public void onClick(View view) { switch (view.getId()) { case R.id.pick:
-	 * image.setImageBitmap(null); startActivityForResult(new
-	 * Intent(PhotoDetectActivity.this, SelectPictureActivity.class),
-	 * REQUEST_GET_PHOTO); //startActivityForResult(new
-	 * Intent("android.intent.action.PICK"
-	 * ,MediaStore.Images.Media.EXTERNAL_CONTENT_URI), REQUEST_GET_PHOTO);
-	 * break; case R.id.detect: detectHandler.post(new Runnable() {
-	 * 
-	 * @Override public void run() {
-	 * 
-	 * Face[] faceinfo = detecter.findFaces(curBitmap);// 进行人脸检测 if (faceinfo ==
-	 * null) { runOnUiThread(new Runnable() {
-	 * 
-	 * @Override public void run() { Toast.makeText(PhotoDetectActivity.this,
-	 * "未发现人脸信息", Toast.LENGTH_LONG) .show(); } }); return; }
-	 * 
-	 * final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap); BitmapDrawable
-	 * draw=(BitmapDrawable) getResources().getDrawable(R.drawable.a111); Bitmap
-	 * tmp=draw.getBitmap(); resbitmap = getFaceResBitmap(faceinfo,
-	 * tmp,curBitmap); runOnUiThread(new Runnable() {
-	 * 
-	 * @Override public void run() { imageView.setImageBitmap(bit); new
-	 * Thread(new GetFaceLocation()).start();
-	 * 
-	 * System.gc(); } }); } }); } }
-	 */
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		/*
-		 * if (resultCode == RESULT_OK) { switch (requestCode) { case
-		 * REQUEST_GET_PHOTO: { if (data != null) { final String str; Uri
-		 * localUri = data.getData(); String[] arrayOfString = new String[1];
-		 * arrayOfString[0] = "_data"; Cursor localCursor =
-		 * getContentResolver().query(localUri,arrayOfString, null, null, null);
-		 * if (localCursor == null) return; localCursor.moveToFirst(); str =
-		 * localCursor.getString(localCursor .getColumnIndex(arrayOfString[0]));
-		 * localCursor.close(); if ((curBitmap != null) &&
-		 * (!curBitmap.isRecycled())) curBitmap.recycle(); curBitmap =
-		 * getScaledBitmap(str, 600); imageView.setImageBitmap(curBitmap); }
-		 * break; } }
-		 * 
-		 * }
-		 */
+
 
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
