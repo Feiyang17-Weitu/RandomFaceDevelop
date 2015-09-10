@@ -9,7 +9,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -89,6 +88,24 @@ public class RollActivity extends Activity {
 		
 	}
 
+	public static Bitmap getFaceInfoBitmap(Face[] faceinfos, Bitmap oribitmap) {
+		Bitmap tmp;
+		tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
+
+		Canvas localCanvas = new Canvas(tmp);
+		Paint localPaint = new Paint();
+		localPaint.setColor(0xffff0000);
+		localPaint.setStyle(Paint.Style.STROKE);
+		localPaint.setStrokeWidth(2);
+		for (Face localFaceInfo : faceinfos) {
+			RectF rect = new RectF(oribitmap.getWidth() * localFaceInfo.left,
+					oribitmap.getHeight() * localFaceInfo.top,
+					oribitmap.getWidth() * localFaceInfo.right,
+					oribitmap.getHeight() * localFaceInfo.bottom);
+			localCanvas.drawRect(rect, localPaint);
+		}
+		return tmp;
+	}
 
 	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos, Bitmap oribitmap) {
 		ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
@@ -168,16 +185,19 @@ public class RollActivity extends Activity {
 					return;
 				}
 				
+				final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
 				for(int i=0;i<resbitmap.size();i++){
 					if(!resbitmap.get(i).isRecycled()){
 						resbitmap.get(i).recycle();
 					}
 				}
+
 				resbitmap = getFaceResBitmap(faceinfo,curBitmap);
 				Toast.makeText(RollActivity.this, "识别成功,可以翻牌了！！！", Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
+						imageView.setImageBitmap(bit);
 						System.gc();
 					}
 				});
@@ -200,6 +220,7 @@ public class RollActivity extends Activity {
 					curBitmap = getScaledBitmap(str, 600);
 					imageView.setImageBitmap(curBitmap);
 					OnDetect();
+					
 				}
 				break;
 			}
