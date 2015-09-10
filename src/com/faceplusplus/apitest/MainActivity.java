@@ -4,22 +4,58 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.megvii.apitest.R;
 
 public class MainActivity extends Activity {
 
+	SharedPreferences logintips;
+
+	// SharedPreferences.Editor editor;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
+		// logintips = getSharedPreferences("notips", Activity.MODE_PRIVATE);
+		// if()
+		// {
+		// 启动提示
+		final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(
+				this);
+		builder.setTitle("告别选择困难，就在今天~\n只需拍张照，看看谁是幸运儿！");
+		LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(
+				R.layout.first_login_tips, null);
+		builder.setView(linearLayout);
+		final CheckBox nomore = (CheckBox) findViewById(R.id.nomore);
+		builder.setPositiveButton("确定", null);
+
+		/*
+		 * builder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+		 * {
+		 * 
+		 * @Override public void onClick(DialogInterface dialog, int which) { if
+		 * (nomore.isChecked() == true) { SharedPreferences.Editor editor =
+		 * logintips .edit(); editor.putString("notips", "1"); editor.commit();
+		 * } else { SharedPreferences.Editor editor = logintips .edit();
+		 * editor.putString("notips", "0"); editor.commit(); } } });
+		 * builder.create().show(); }
+		 */
+		builder.create().show();
+		// 启动提示End
 		ImageView MainButton1 = (ImageView) findViewById(R.id.imageView1);
 		ImageView MainButton2 = (ImageView) findViewById(R.id.imageView2);
 		ImageView MainButton3 = (ImageView) findViewById(R.id.imageView3);

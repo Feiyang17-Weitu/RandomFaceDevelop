@@ -13,10 +13,17 @@
 <Button 
         android:layout_x="95dip"
         android:layout_y="90dip"
+        android:id="@+id/BnAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加"/>
+<Button 
+        android:layout_x="95dip"
+        android:layout_y="90dip"
         android:id="@+id/BnChoose"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="选取抽签者姓名"/>
+        android:text="选取"/>
 <TextView 
         android:layout_x="40dip"
         android:layout_y="150dip"
@@ -38,5 +45,16 @@
         android:layout_height="wrap_content"
         android:text="Stop"
         android:layout_below="@id/EditBallot"/>
+    <TextView
+        android:layout_x="40dip"
+        android:layout_y="30dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="选择人数" />
+
+    <NumberPicker
+        android:id="@+id/numberPick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

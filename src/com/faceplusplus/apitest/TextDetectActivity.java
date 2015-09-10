@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,15 +26,10 @@ public class TextDetectActivity extends Activity {
 	private final String[] names = new String[33];
 	Timer timer;
 
-	private final String[] areas = new String[] { "蔡瑞", "徐永浩", "范金端", "王源",
-			"李英明", "刘宇阳", "聂明炎", "张启震", "杨志爽", "马玉炎", "邢全伟", "詹旭琛", "刘津旭",
-			"陈琳", "陈凯", "谢冲", "王辰", "舒震", "刘坚强", "沈依铭", "欧阳知雨", "王晨", "路少雯",
-			"王蕾", "郭毛", "宋蜜", "刘琛", "任梦萤", "徐瑶", "叶乔羽", "董乐", "孟燦" };
+	private final String[] areas = new String[] { "欧雪雯", "李德才", "丁一", "刘红",
+			"李恒", "王许兵" };
 	private final boolean[] areaState = new boolean[] { false, false, false,
-			false, false, false, false, false, false, false, false, false,
-			false, false, false, false, false, false, false, false, false,
-			false, false, false, false, false, false, false, false, false,
-			false, false };
+			false, false, false };
 	private ListView areaCheckListView;
 
 	@Override
@@ -46,6 +42,8 @@ public class TextDetectActivity extends Activity {
 		final Button StartBn = (Button) findViewById(R.id.BnStart);
 		final Button StopBn = (Button) findViewById(R.id.BnStop);
 		final Button ChooseBn = (Button) findViewById(R.id.BnChoose);
+		final Button AddBn = (Button) findViewById(R.id.BnAdd);
+		final NumberPicker numPicker = (NumberPicker) findViewById(R.id.numberPick);
 
 		final Handler handler = new Handler() {
 			@Override
@@ -59,6 +57,10 @@ public class TextDetectActivity extends Activity {
 			}
 
 		};
+
+		// 设置
+		numPicker.setMaxValue(6);
+		numPicker.setMinValue(1);
 
 		StartBn.setOnClickListener(new OnClickListener() {
 			@Override
