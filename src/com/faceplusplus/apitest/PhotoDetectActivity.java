@@ -239,7 +239,8 @@ public class PhotoDetectActivity extends Activity {
 
 						@Override
 						public void run() {
-							Toast.makeText(PhotoDetectActivity.this,"未发现人脸信息", Toast.LENGTH_LONG).show();
+							Toast.makeText(PhotoDetectActivity.this,
+									"未发现人脸信息", Toast.LENGTH_LONG).show();
 							isrunning = false;
 						}
 					});
