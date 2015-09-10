@@ -5,6 +5,7 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -22,16 +23,16 @@ public class MainActivity extends Activity {
 
 	SharedPreferences logintips;
 
-	// SharedPreferences.Editor editor;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 
-		// logintips = getSharedPreferences("notips", Activity.MODE_PRIVATE);
-		// if()
+		logintips = getSharedPreferences("notips", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor;
+
+		// if(logintips.getString(key, defValue))
 		// {
 		// 启动提示
 		final android.app.AlertDialog.Builder builder = new AlertDialog.Builder(
