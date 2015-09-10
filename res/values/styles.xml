@@ -3,7 +3,7 @@
     <style name="TitleBar" >
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">59dp</item>
-        <item name="android:background">@drawable/black</item>
+        <item name="android:background">#f2f2f2</item>
         <item name="android:layout_alignParentTop">true</item>
     </style>
 
@@ -34,7 +34,7 @@
     </style>
     <style name="TitleBarLeftIcon_back" parent="TitleBarIcon">
         <item name="android:layout_marginRight">300dp</item>
-        <item name="android:src">@drawable/navigation_back</item>
+        <item name="android:src">@drawable/fanhui3</item>
     </style>
     <style name="TitleBarLeftIcon_list" parent="TitleBarIcon">
         <item name="android:layout_marginRight">300dp</item>
