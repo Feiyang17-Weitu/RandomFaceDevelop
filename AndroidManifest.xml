@@ -29,11 +29,13 @@
         </activity>
         <activity android:name="com.faceplusplus.apitest.SelectPictureActivity"/>
         <activity android:name="com.faceplusplus.apitest.TextDetectActivity"/>
-        <activity android:name="com.faceplusplus.shake.TestActivity"/>
+        
         <activity android:name="com.faceplusplus.shake.DensityUtil"/>
-           <activity android:name="com.faceplusplus.shake.NeedForAnim"/>
-           <activity android:name="com.faceplusplus.shake.NeedForSound"/>
-            <activity android:name="com.faceplusplus.shake.ShakeListener"/>
+        <activity android:name="com.faceplusplus.shake.NeedForSound"/>
+        <activity android:name="com.faceplusplus.shake.ShakeListener"/>
+        
+        <activity android:name="com.faeplusplusRollOver.RollActivity"/>
+        <activity android:name="com.faeplusplusRollOver.RollActivityTurn"/>
         
         
     </application>

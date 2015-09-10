@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.faeplusplusRollOver.RollActivity;
 import com.megvii.apitest.R;
 
 public class MainActivity extends Activity {
@@ -72,8 +73,7 @@ public class MainActivity extends Activity {
 	class MainButton1Listener implements View.OnClickListener {
 		@Override
 		public void onClick(View view) {
-			Intent TextDetectIntent = new Intent(MainActivity.this,
-					PhotoDetectActivity.class);
+			Intent TextDetectIntent = new Intent(MainActivity.this,PhotoDetectActivity.class);
 			startActivity(TextDetectIntent);
 		}
 	}
@@ -81,8 +81,8 @@ public class MainActivity extends Activity {
 	class MainButton2Listener implements View.OnClickListener {
 		@Override
 		public void onClick(View view) {
-			Toast.makeText(getApplicationContext(), "ImageView2",
-					Toast.LENGTH_LONG).show();
+			Intent TextDetectIntent = new Intent(MainActivity.this,RollActivity.class);
+			startActivity(TextDetectIntent);
 		}
 	}
 
@@ -91,8 +91,7 @@ public class MainActivity extends Activity {
 		public void onClick(View view) {
 			// Toast.makeText(getApplicationContext(), "ImageView3",
 			// Toast.LENGTH_LONG).show();
-			Intent TextDetectIntent = new Intent(MainActivity.this,
-					TextDetectActivity.class);
+			Intent TextDetectIntent = new Intent(MainActivity.this,TextDetectActivity.class);
 			startActivity(TextDetectIntent);
 		}
 	}
@@ -100,8 +99,7 @@ public class MainActivity extends Activity {
 	class MainButton4Listener implements View.OnClickListener {
 		@Override
 		public void onClick(View view) {
-			Toast.makeText(getApplicationContext(), "ImageView4",
-					Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "ImageView4",Toast.LENGTH_LONG).show();
 		}
 	}
 
