@@ -39,65 +39,83 @@ public final class R {
     }
     public static final class drawable {
         public static final int a111=0x7f020000;
-        public static final int black=0x7f020001;
-        public static final int check_selector=0x7f020002;
-        public static final int demo=0x7f020003;
-        public static final int four=0x7f020004;
-        public static final int homebg=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
-        public static final int icon_sad_black=0x7f020007;
-        public static final int one=0x7f020008;
-        public static final int progressbar_shake_loading=0x7f020009;
-        public static final int shake_flower_img=0x7f02000a;
-        public static final int shake_loading_img=0x7f02000b;
-        public static final int shake_logo_down=0x7f02000c;
-        public static final int shake_logo_up=0x7f02000d;
-        public static final int shake_result_bg=0x7f02000e;
-        public static final int three=0x7f02000f;
-        public static final int two=0x7f020010;
+        public static final int bg_edittext=0x7f020001;
+        public static final int bg_edittext_focused=0x7f020002;
+        public static final int bg_edittext_normal=0x7f020003;
+        public static final int bg_home=0x7f020004;
+        public static final int black=0x7f020005;
+        public static final int camera_icon=0x7f020006;
+        public static final int check_selector=0x7f020007;
+        public static final int demo=0x7f020008;
+        public static final int four=0x7f020009;
+        public static final int homebg=0x7f02000a;
+        public static final int ic_launcher=0x7f02000b;
+        public static final int icon_sad_black=0x7f02000c;
+        public static final int list=0x7f02000d;
+        public static final int navigation_back=0x7f02000e;
+        public static final int one=0x7f02000f;
+        public static final int progressbar_shake_loading=0x7f020010;
+        public static final int shake_flower_img=0x7f020011;
+        public static final int shake_loading_img=0x7f020012;
+        public static final int shake_logo_down=0x7f020013;
+        public static final int shake_logo_up=0x7f020014;
+        public static final int shake_result_bg=0x7f020015;
+        public static final int shape_round_rect=0x7f020016;
+        public static final int shape_round_rect_blue=0x7f020017;
+        public static final int test_people=0x7f020018;
+        public static final int three=0x7f020019;
+        public static final int transparent=0x7f02001a;
+        public static final int two=0x7f02001b;
     }
     public static final class id {
-        public static final int BnAdd=0x7f0b0012;
-        public static final int BnChoose=0x7f0b0013;
-        public static final int BnStart=0x7f0b0015;
-        public static final int BnStop=0x7f0b0016;
-        public static final int EditBallot=0x7f0b0014;
-        public static final int action_settings=0x7f0b0029;
-        public static final int bottom=0x7f0b000e;
-        public static final int btnShake=0x7f0b000a;
-        public static final int btn_back=0x7f0b000b;
-        public static final int btn_ok=0x7f0b000c;
-        public static final int btn_select=0x7f0b000f;
-        public static final int check=0x7f0b001a;
-        public static final int choose=0x7f0b001e;
-        public static final int detect=0x7f0b0009;
-        public static final int gridview=0x7f0b000d;
-        public static final int id_dir_item_count=0x7f0b001d;
-        public static final int id_dir_item_image=0x7f0b001b;
-        public static final int id_dir_item_name=0x7f0b001c;
-        public static final int image2=0x7f0b0007;
+        public static final int BnAdd=0x7f0b0019;
+        public static final int BnChoose=0x7f0b001a;
+        public static final int BnStart=0x7f0b001c;
+        public static final int BnStop=0x7f0b001d;
+        public static final int EditBallot=0x7f0b001b;
+        public static final int action_settings=0x7f0b0030;
+        public static final int add_album=0x7f0b0009;
+        public static final int bar_title=0x7f0b0008;
+        public static final int bottom=0x7f0b0015;
+        public static final int btnDrawer=0x7f0b0007;
+        public static final int btnShake=0x7f0b0011;
+        public static final int btn_back=0x7f0b0012;
+        public static final int btn_ok=0x7f0b0013;
+        public static final int btn_select=0x7f0b0016;
+        public static final int check=0x7f0b0021;
+        public static final int choose=0x7f0b0025;
+        public static final int detect=0x7f0b0010;
+        public static final int editText1=0x7f0b000d;
+        public static final int editText2=0x7f0b000e;
+        public static final int gridview=0x7f0b0014;
+        public static final int id_dir_item_count=0x7f0b0024;
+        public static final int id_dir_item_image=0x7f0b0022;
+        public static final int id_dir_item_name=0x7f0b0023;
+        public static final int image2=0x7f0b000c;
         public static final int imageView1=0x7f0b0001;
         public static final int imageView2=0x7f0b0002;
         public static final int imageView3=0x7f0b0004;
         public static final int imageView4=0x7f0b0005;
-        public static final int imageview=0x7f0b0006;
-        public static final int iv=0x7f0b0019;
-        public static final int listview=0x7f0b0010;
-        public static final int nomore=0x7f0b0018;
-        public static final int numberPick=0x7f0b0017;
+        public static final int imageview=0x7f0b000b;
+        public static final int iv=0x7f0b0020;
+        public static final int listview=0x7f0b0017;
+        public static final int nomore=0x7f0b001f;
+        public static final int numberPick=0x7f0b001e;
         public static final int one_ll=0x7f0b0000;
-        public static final int pick=0x7f0b0008;
-        public static final int shakeImgDown=0x7f0b0021;
-        public static final int shakeImgDown_line=0x7f0b0028;
-        public static final int shakeImgUp=0x7f0b0026;
-        public static final int shakeImgUp_line=0x7f0b0027;
-        public static final int shake_flower=0x7f0b001f;
-        public static final int shake_loading=0x7f0b0020;
-        public static final int shake_result_img=0x7f0b0023;
-        public static final int shake_result_layout=0x7f0b0022;
-        public static final int shake_result_txt_name=0x7f0b0024;
-        public static final int shake_result_txt_value=0x7f0b0025;
-        public static final int textBallot=0x7f0b0011;
+        public static final int pick=0x7f0b000f;
+        public static final int relativeLayout1=0x7f0b000a;
+        public static final int shakeImgDown=0x7f0b0028;
+        public static final int shakeImgDown_line=0x7f0b002f;
+        public static final int shakeImgUp=0x7f0b002d;
+        public static final int shakeImgUp_line=0x7f0b002e;
+        public static final int shake_flower=0x7f0b0026;
+        public static final int shake_loading=0x7f0b0027;
+        public static final int shake_result_img=0x7f0b002a;
+        public static final int shake_result_layout=0x7f0b0029;
+        public static final int shake_result_txt_name=0x7f0b002b;
+        public static final int shake_result_txt_value=0x7f0b002c;
+        public static final int textBallot=0x7f0b0018;
+        public static final int title_bar=0x7f0b0006;
         public static final int two_ll=0x7f0b0003;
     }
     public static final class layout {
@@ -140,15 +158,6 @@ public final class R {
     }
     public static final class style {
         /** 
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-
         Base application theme for API 11+. This theme completely replaces
         AppBaseTheme from res/values/styles.xml on API 11+ devices.
     
@@ -160,10 +169,15 @@ public final class R {
     
  API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f090000;
-        /**  Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
-         */
-        public static final int AppTheme=0x7f090001;
+        public static final int AppBaseTheme=0x7f090009;
+        public static final int EditEnter=0x7f090008;
+        public static final int Title=0x7f090002;
+        public static final int TitleBar=0x7f090000;
+        public static final int TitleBarIcon=0x7f090007;
+        public static final int TitleBarLeftIcon_back=0x7f090005;
+        public static final int TitleBarLeftIcon_list=0x7f090006;
+        public static final int TitleBarRightIcon=0x7f090004;
+        public static final int TitleBarView=0x7f090001;
+        public static final int TitleView=0x7f090003;
     }
 }
