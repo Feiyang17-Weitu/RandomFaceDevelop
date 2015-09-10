@@ -1,160 +1,94 @@
 package com.faceplusplus.apitest;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.NumberPicker;
-import android.widget.TextView;
+import android.view.View.OnKeyListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.megvii.apitest.R;
 
 public class TextDetectActivity extends Activity {
 
-	private int flag = 0;
-	private int begin = 0;
-	private final String[] names = new String[33];
-	Timer timer;
-
-	private final String[] areas = new String[] { "欧雪雯", "李德才", "丁一", "刘红",
-			"李恒", "王许兵" };
-	private final boolean[] areaState = new boolean[] { false, false, false,
-			false, false, false };
-	private ListView areaCheckListView;
-
+	private ArrayList<HashMap<String, String>> textEditItem = new ArrayList<HashMap<String, String>>();
+	private SimpleAdapter simpleAdapter;     //适配器
+	private GridView gridView1;
+	private EditText editText;
+	//private HashMap<String, String> map;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text_detect);
-
-		final TextView Edit = (TextView) findViewById(R.id.EditBallot);
-		final Button StartBn = (Button) findViewById(R.id.BnStart);
-		final Button StopBn = (Button) findViewById(R.id.BnStop);
-		final Button ChooseBn = (Button) findViewById(R.id.BnChoose);
-		final Button AddBn = (Button) findViewById(R.id.BnAdd);
-		final NumberPicker numPicker = (NumberPicker) findViewById(R.id.numberPick);
-
-		final Handler handler = new Handler() {
+		
+		//获取grideView控件对象
+        gridView1 = (GridView) findViewById(R.id.gridView1);
+        
+        //Button btnBeginDetectButton = (Button) findViewById(R.id.begin);
+        
+        //获取编辑框对象
+        editText = (EditText) findViewById(R.id.text);
+        editText.setOnKeyListener(new OnKeyListener() {
 			@Override
-			public void handleMessage(Message msg) {
-				if (msg.what == 0x1122) {
-					Edit.setText(names[flag]);
-				}
-
-				super.handleMessage(msg);
-
-			}
-
-		};
-
-		// 设置
-		numPicker.setMaxValue(6);
-		numPicker.setMinValue(1);
-
-		StartBn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				if (timer == null) {
-					timer = new Timer();
-				}
-				timer.schedule(new TimerTask() {
-
-					@Override
-					public void run() {
-
-						flag++;
-						if (flag > begin) {
-							flag = 0;
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN) 
+				{
+					HashMap<String, String> map = new HashMap<String, String>();
+					String strTmp = editText.getText().toString();
+					if (!strTmp.equals("")) 
+					{
+						if(textEditItem.size() == 10) { //第一张为默认图片
+							Toast.makeText(TextDetectActivity.this, "最多只能添加15个", Toast.LENGTH_SHORT).show();
+							editText.setText("");
+							return false;
 						}
-
-						Message m = new Message();
-						m.what = 0x1122;
-						handler.sendMessage(m);
-					}
-				}, 0, 100);
-				StartBn.setClickable(false);
-				StopBn.setClickable(true);
+						else {
+							Toast.makeText(TextDetectActivity.this, "添加成功", Toast.LENGTH_SHORT).show();			
+					        map.put("itemText", strTmp);
+					        textEditItem.add(map);
+					        simpleAdapter = new SimpleAdapter(TextDetectActivity.this, 
+					        		textEditItem, R.layout.gride_item_add,
+					                new String[] {"itemText"}, new int[] {R.id.editText1}); 
+					        gridView1.setAdapter(simpleAdapter);
+					        simpleAdapter.notifyDataSetChanged();
+						}
+						editText.setText("");
+						return true;
+					}		
+				}
+				return false;
 			}
+        });
+	
+		gridView1.setOnItemLongClickListener(new OnItemLongClickListener() {
+			 
+		    @Override
+		    public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		        // TODO Auto-generated method stub
+		    	//HashMap<String, String>  map = (HashMap<String, String>) ((GridView) arg0).getItemAtPosition(arg2);
+		    	textEditItem.remove(arg2);
+		    	simpleAdapter.notifyDataSetChanged();
+		        return true;
+		    }      
 		});
-
-		StopBn.setOnClickListener(new OnClickListener() {
+		
+/*		btnBeginDetectButton.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public void onClick(View arg0) {
-
-				timer.cancel();
-				timer = null;
-				StartBn.setClickable(true);
-				StopBn.setClickable(false);
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				//Random 
 			}
-		});
-
-		ChooseBn.setOnClickListener(new CheckBoxClickListener());
-
+		});*/
 	}
-
-	class CheckBoxClickListener implements OnClickListener {
-		@Override
-		public void onClick(View v) {
-			begin = 0;
-			AlertDialog ad = new AlertDialog.Builder(TextDetectActivity.this)
-					.setTitle("抽签者姓名")
-					.setMultiChoiceItems(areas, areaState,
-							new DialogInterface.OnMultiChoiceClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int whichButton, boolean isChecked) {
-								}
-							})
-					.setPositiveButton("确定",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int whichButton) {
-
-									String s = "您选择了:";
-									for (int i = 0; i < areas.length; i++) {
-										if (areaCheckListView
-												.getCheckedItemPositions().get(
-														i)) {
-											s += (i + 1)
-													+ ":"
-													+ areaCheckListView
-															.getAdapter()
-															.getItem(i) + "  ";
-											names[begin] = areaCheckListView
-													.getAdapter().getItem(i)
-													.toString();
-											begin++;
-										} else {
-											areaCheckListView
-													.getCheckedItemPositions()
-													.get(i, false);
-										}
-									}
-									if (areaCheckListView
-											.getCheckedItemPositions().size() > 0) {
-										Toast.makeText(TextDetectActivity.this,
-												s, Toast.LENGTH_LONG).show();
-									} else {
-										// 没有选择
-									}
-									dialog.dismiss();
-								}
-							}).setNegativeButton("取消", null).create();
-			areaCheckListView = ad.getListView();
-			ad.show();
-		}
-	}
-
 }
