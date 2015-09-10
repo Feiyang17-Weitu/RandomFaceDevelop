@@ -30,6 +30,7 @@ public class RollActivityTurn extends Activity {
 	// 地址
 
 	private final boolean bool = false;
+	private int count;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +42,9 @@ public class RollActivityTurn extends Activity {
 		Intent it = super.getIntent();
 		resbitmap = (ArrayList<Bitmap>) it.getSerializableExtra("resbitmap");
 
+		count = resbitmap.size()>9?9:resbitmap.size();
 		List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
-		for (int i = 0; i < resbitmap.size(); i++) {
+		for (int i = 0; i < count; i++) {
 			Map<String, Object> listItem = new HashMap<String, Object>();
 			listItem.put("image", R.drawable.cardback);
 			listItems.add(listItem);
@@ -66,7 +68,8 @@ public class RollActivityTurn extends Activity {
 				arg1.startAnimation(animation2);
 				
 				
-				if (resbitmap.size()>0) {
+				if (count>0) {
+					count--;
 					int i = (int)(Math.random()*resbitmap.size());
 					((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(i));
 					resbitmap.remove(i);
