@@ -2,29 +2,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/bg_home"
     tools:context=".PhotoDetectActivity" >
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/imageview"
+        <RelativeLayout
+	        style="@style/TitleBar"
+	        android:id="@+id/title_bar"
+	        android:layout_alignParentTop="true">
+	        <ImageView
+	            android:id="@+id/btnDrawer"
+	            style="@style/TitleBarLeftIcon_back"
+	            android:layout_height="wrap_content"
+	            android:layout_width="wrap_content"
+	            android:layout_marginLeft="10dp"
+	            />
+	        <TextView
+	            android:id="@+id/bar_title"
+	            style="@style/Title"
+	            android:text="拍拍选"
+	            android:layout_marginRight="10dp"
+	            />
+
+	        <ImageView
+	            android:id="@+id/add_album"
+	            style="@style/TitleBarRightIcon"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:src="@drawable/camera_icon" />
+
+	    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="280dp" 
+        android:layout_marginTop="59dp"
+        android:layout_alignParentTop="true">
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/transparent" />
+
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/ic_launcher"/>
-    
-    <ImageView
-        android:id="@+id/image2"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="200dp"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择人数"/>
+
+        <EditText
+            android:id="@+id/editText1"
+            style="@style/EditEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+        
+    </LinearLayout>
+        <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/a111"/>
-    
-</RelativeLayout>
-    
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请输入题目"/>
+
+        <EditText
+            android:id="@+id/editText2"
+            style="@style/EditEnter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+        
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,6 +137,15 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="摇一摇" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/relativeLayout1"
+        android:layout_below="@+id/relativeLayout1"
+        android:layout_marginRight="129dp"
+        android:layout_marginTop="36dp" >
     </LinearLayout>
 
 </RelativeLayout>
