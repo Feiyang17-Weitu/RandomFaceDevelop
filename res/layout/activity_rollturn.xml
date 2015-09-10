@@ -2,7 +2,27 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:orientation="vertical" >
+    <RelativeLayout
+	        style="@style/TitleBar"
+	        android:id="@+id/title_bar"
+	        android:layout_alignParentTop="true">
+	        <ImageView
+	            android:id="@+id/btnDrawer"
+	            style="@style/TitleBarLeftIcon_back"
+	            android:layout_height="wrap_content"
+	            android:layout_width="wrap_content"
+	            android:padding="10dp"
+	            />
+	        <TextView
+	            android:id="@+id/bar_title"
+	            style="@style/Title"
+	            android:text="翻牌子"
+	            android:layout_marginRight="10dp"
+	            android:textColor="#fe448a"
+	            />
+	   </RelativeLayout>
     
     <GridView
             android:id="@+id/gridview"

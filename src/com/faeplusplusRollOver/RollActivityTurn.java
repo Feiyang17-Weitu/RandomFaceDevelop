@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.megvii.apitest.R;
 
@@ -43,7 +42,7 @@ public class RollActivityTurn extends Activity {
 		List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < resbitmap.size(); i++) {
 			Map<String, Object> listItem = new HashMap<String, Object>();
-			listItem.put("image", R.drawable.cardback2);
+			listItem.put("image", R.drawable.cardback);
 			listItems.add(listItem);
 		}
 
@@ -55,12 +54,9 @@ public class RollActivityTurn extends Activity {
 		grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				// TODO Auto-generated method stub
 				// imgView.setImageResource(R.drawable.test1);
-				
-				Toast.makeText(getApplicationContext(), "This is " + arg3,Toast.LENGTH_LONG).show();
 				Animation animation = AnimationUtils.loadAnimation(RollActivityTurn.this, R.anim.back_scale);
 				arg1.startAnimation(animation);
 
@@ -68,8 +64,14 @@ public class RollActivityTurn extends Activity {
 				arg1.startAnimation(animation2);
 				
 				
-				((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(arg2));
+				if (resbitmap.size()>0) {
+					int i = (int)(Math.random()*resbitmap.size());
+					((ImageView)arg1.findViewById(R.id.imgView)).setImageBitmap(resbitmap.get(i));
+					resbitmap.remove(i);
+				}
+				
 			}
 		});
 	}
 }
+

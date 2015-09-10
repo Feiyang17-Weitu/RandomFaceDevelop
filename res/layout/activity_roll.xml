@@ -58,7 +58,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:onClick="onClick"
-            android:src="@drawable/arrow2"
+            android:src="@drawable/go"
             android:text="翻牌子!" />
     </LinearLayout>
 
