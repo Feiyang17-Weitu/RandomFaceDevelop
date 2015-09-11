@@ -38,7 +38,8 @@ public class TextDetectActivity extends Activity {
 	private ImageView btnClear;
 	private ShakeListener mShakeListener = null;
 	private OnShakeListenerCallBack CBackShakeListener = null;
-	private String strDetectResult;
+	private String strDetectResult1;
+	private String strDetectResult2;
 	
 	//private HashMap<String, String> map;
 	
@@ -57,6 +58,8 @@ public class TextDetectActivity extends Activity {
         
         //获取编辑框对象
         editText1 = (EditText) findViewById(R.id.text);
+        editText1.setFocusable(true);
+        
         editText1.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -144,9 +147,25 @@ public class TextDetectActivity extends Activity {
 				/*if (editText3.getText().toString().equals("")) {
 					Toast.makeText(getApplication(), "主题不能为空", Toast.LENGTH_LONG).show();
 				}*/
-				Random random = new Random();
-				int iIndex = random.nextInt(textEditItem.size() - 1);
-				strDetectResult = textEditItem.get(iIndex).get("itemText");
+				
+				ArrayList<HashMap<String, String>> listTmp = textEditItem;
+				String strDetectResult = "";
+				int iIndex = 0;
+				while (selectNum > 0) {
+					Random random = new Random();
+					if (1 != listTmp.size()) {
+						iIndex = random.nextInt(listTmp.size() - 1);
+					}
+					strDetectResult1 = listTmp.get(iIndex).get("itemText");
+					if (1 == selectNum) {
+						strDetectResult += strDetectResult1;
+					}
+					else {
+						strDetectResult += (strDetectResult1 + " ");
+					}	
+					listTmp.remove(iIndex);
+					selectNum--;
+				}
 				
 	            AlertDialog.Builder builder = new AlertDialog.Builder(TextDetectActivity.this);
 	            //    设置Title的内容
@@ -189,9 +208,25 @@ public class TextDetectActivity extends Activity {
 				Toast.makeText(getApplication(), "主题不能为空", Toast.LENGTH_LONG).show();
 				return;
 			}*/
-			Random random = new Random();
-			int iIndex = random.nextInt(textEditItem.size() - 1);
-			strDetectResult = textEditItem.get(iIndex).get("itemText");
+			
+			ArrayList<HashMap<String, String>> listTmp = textEditItem;
+			String strDetectResult = "";
+			int iIndex = 0;
+			while (selectNum > 0) {
+				Random random = new Random();
+				if (1 != listTmp.size()) {
+					iIndex = random.nextInt(listTmp.size() - 1);
+				}
+				strDetectResult1 = listTmp.get(iIndex).get("itemText");
+				if (1 == selectNum) {
+					strDetectResult += strDetectResult1;
+				}
+				else {
+					strDetectResult += (strDetectResult1 + " ");
+				}	
+				listTmp.remove(iIndex);
+				selectNum--;
+			}
 			
             AlertDialog.Builder builder = new AlertDialog.Builder(TextDetectActivity.this);
             //    设置Title的内容
