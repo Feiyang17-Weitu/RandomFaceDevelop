@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -235,6 +237,7 @@ public class PhotoDetectActivity extends Activity {
 			return;
 		}
 		
+		Toast.makeText(PhotoDetectActivity.this, "正在进行人脸识别，请稍后····", Toast.LENGTH_LONG).show();
 		System.out.println("start detect");
 		detectHandler.post(new Runnable() {
 
@@ -270,9 +273,9 @@ public class PhotoDetectActivity extends Activity {
 				
 				
 				int i = (int)(Math.random()*(resbitmap.size()));
-				int x = (int)(curBitmap.getWidth() * ((faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/3)>0?(faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/3):0));
+				int x = (int)(curBitmap.getWidth() * ((faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/2)>0?(faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/2):0));
 				int y = (int)(curBitmap.getHeight() * ((faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2)>0?(faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2):0));
-                int width = (int)(curBitmap.getWidth() * (faceinfo[i].right-faceinfo[i].left)*5/3);
+                int width = (int)(curBitmap.getWidth() * (faceinfo[i].right-faceinfo[i].left)*2);
 				int height = (int)(curBitmap.getHeight() * (faceinfo[i].bottom-faceinfo[i].top)*2);
 				if(x + width > curBitmap.getWidth()){
 					width = curBitmap.getWidth() - x;
@@ -281,8 +284,22 @@ public class PhotoDetectActivity extends Activity {
 					height = curBitmap.getHeight() - y;
 				}
 				Bitmap luckybitmap = Bitmap.createBitmap(curBitmap, x,y, width,height);
+                 
+		        Bitmap bitmapframe = BitmapFactory.decodeResource(getResources(),R.drawable.xunzhang);
+		        
+		        Bitmap bitmap3 = Bitmap.createBitmap(bitmapframe.getWidth()*2/3, bitmapframe.getHeight()*2/3,Bitmap.Config.ARGB_4444);  
+		        Canvas canvas = new Canvas(bitmap3);
+ 
+		        canvas.drawBitmap(luckybitmap, new Rect(0,0,luckybitmap.getWidth(),luckybitmap.getHeight()),
+		        		new Rect(bitmap3.getWidth()/4,bitmap3.getHeight()/4,
+		        				bitmap3.getWidth()*3/4,bitmap3.getHeight()*3/4), null);
+		        
+		        canvas.drawBitmap(bitmapframe, new Rect(0,0,bitmapframe.getWidth(),bitmapframe.getHeight()),
+		        		new Rect(0,0,bitmap3.getWidth(),bitmap3.getHeight()), null);
+				
+                resbitmap.add(bitmap3);
                 
-                resbitmap.add(luckybitmap);
+                Toast.makeText(PhotoDetectActivity.this, "人脸识别完成", Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 
 					@Override
