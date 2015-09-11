@@ -35,11 +35,9 @@
         <EditText
             android:id="@+id/text"
             style="@style/EditEnter"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="点击回车生成一个选项"
-            android:singleLine="true" />
+            android:hint="点击回车生成一个选项" />
 
         <GridView
             android:id="@+id/gridView1"
@@ -104,8 +102,6 @@
                 android:layout_toRightOf="@id/textView1"
                 android:inputType="number"
                 android:textColor="#fe448a" >
-
-                <requestFocus />
             </EditText>
         </RelativeLayout>
 
