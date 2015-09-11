@@ -37,7 +37,6 @@
             style="@style/EditEnter"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="点击回车生成一个选项" />
 
         <GridView
@@ -59,16 +58,39 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/gridview1"
-            android:layout_marginTop="200dp" >
+            android:layout_height="90dp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="380dp" >
+
+            <ImageView
+                android:id="@+id/button1"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow2"
+                android:layout_marginRight="50dp" />
+
+            <ImageView
+                android:id="@+id/button2"
+                android:layout_toRightOf="@id/button1"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/clean" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/gridView1"
+            android:layout_below="@+id/gridView1"
+            android:layout_marginTop="43dp" >
 
             <TextView
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="bottom"
                 android:singleLine="true"
+                android:textSize="18dp"
                 android:text="请选择需要抽出的个数:" />
 
             <EditText
@@ -78,31 +100,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/textView1"
-                android:gravity="bottom"
                 android:inputType="number"
-                android:textColor="#fe448a" />
+                android:textColor="#fe448a" >
+            </EditText>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_marginTop="350dp"
-            android:gravity="center_horizontal" >
-
-            <ImageView
-                android:id="@+id/button1"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="50dp"
-                android:src="@drawable/arrow2" />
-
-            <ImageView
-                android:id="@+id/button2"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/button1"
-                android:src="@drawable/clean" />
-        </RelativeLayout>
     </RelativeLayout>
 
 </RelativeLayout>
