@@ -153,9 +153,7 @@ public class TextDetectActivity extends Activity {
 				int iIndex = 0;
 				while (selectNum > 0) {
 					Random random = new Random();
-					if (1 != listTmp.size()) {
-						iIndex = random.nextInt(listTmp.size() - 1);
-					}
+					iIndex = random.nextInt(listTmp.size());
 					strDetectResult1 = listTmp.get(iIndex).get("itemText");
 					if (1 == selectNum) {
 						strDetectResult += strDetectResult1;
@@ -176,8 +174,10 @@ public class TextDetectActivity extends Activity {
 	            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 	                @Override
 	                public void onClick(DialogInterface dialog, int which)
-	                {               
-	                	dialog.dismiss();
+	                {   
+	                	dialog.cancel();
+	                	//dialog.dismiss();
+	                	//simpleAdapter.notifyDataSetChanged();
 	                }
 	            });
 	            builder.show();
@@ -214,9 +214,7 @@ public class TextDetectActivity extends Activity {
 			int iIndex = 0;
 			while (selectNum > 0) {
 				Random random = new Random();
-				if (1 != listTmp.size()) {
-					iIndex = random.nextInt(listTmp.size() - 1);
-				}
+				iIndex = random.nextInt(listTmp.size());
 				strDetectResult1 = listTmp.get(iIndex).get("itemText");
 				if (1 == selectNum) {
 					strDetectResult += strDetectResult1;
@@ -237,8 +235,10 @@ public class TextDetectActivity extends Activity {
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which)
-                {               
-                	dialog.dismiss();
+                {   
+                	dialog.cancel();
+                	//dialog.dismiss();
+                	//simpleAdapter.notifyDataSetChanged();
                 }
             });
 
