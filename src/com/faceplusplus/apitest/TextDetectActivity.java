@@ -41,6 +41,7 @@ public class TextDetectActivity extends Activity {
 	private String strDetectResult1;
 	private String strDetectResult2;
 	
+	private ImageView imgreturn;
 	//private HashMap<String, String> map;
 	
 	@Override
@@ -48,6 +49,17 @@ public class TextDetectActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_text_detect);
+		
+		imgreturn = (ImageView)super.findViewById(R.id.btnDrawer);
+		imgreturn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				TextDetectActivity.this.finish();
+			}
+		});
+		
 		
 		//获取grideView控件对象
         gridView1 = (GridView) findViewById(R.id.gridView1);        

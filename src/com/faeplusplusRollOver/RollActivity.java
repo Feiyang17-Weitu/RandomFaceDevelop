@@ -73,10 +73,12 @@ public class RollActivity extends Activity {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
+		
 		for(int i=0;i<resbitmap.size();i++){
 			if(!resbitmap.get(i).isRecycled()){
 				resbitmap.get(i).recycle();
@@ -155,11 +157,13 @@ public class RollActivity extends Activity {
 			if (resbitmap.size()<=0) {
 				break;
 			}
-			
 			Intent rollIntent = new Intent(RollActivity.this,RollActivityTurn.class);
 			rollIntent.putExtra("resbitmap", resbitmap);
 			startActivity(rollIntent);
 			break;
+		//case R.id.btnDrawer:
+			//RollActivity.this.finish();
+			//break;
 			default:
 				break;
 		}

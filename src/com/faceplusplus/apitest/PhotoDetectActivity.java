@@ -60,6 +60,7 @@ public class PhotoDetectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_detect);
 
+
 		image = (ImageView) super.findViewById(R.id.image2);
 
 		detectThread = new HandlerThread("detect");
@@ -81,6 +82,7 @@ public class PhotoDetectActivity extends Activity {
 		ImageLoader.getInstance().init(config);
 		
 		initShake();
+		
 	}
 
 	public class GetFaceLocation implements Runnable {
@@ -219,10 +221,12 @@ public class PhotoDetectActivity extends Activity {
 			image.setImageBitmap(null);
 			startActivityForResult(new Intent(PhotoDetectActivity.this,
 					SelectPictureActivity.class), REQUEST_GET_PHOTO);
-
 			break;
 		case R.id.detect:
 			OnDetect();
+			break;
+		case R.id.btnDrawer:
+			PhotoDetectActivity.this.finish();
 			break;
 			default:
 				break;
