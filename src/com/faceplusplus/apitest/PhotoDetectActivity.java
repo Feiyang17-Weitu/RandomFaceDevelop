@@ -2,13 +2,11 @@ package com.faceplusplus.apitest;
 
 import java.util.ArrayList;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -60,7 +58,6 @@ public class PhotoDetectActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_photo_detect);
 
-
 		image = (ImageView) super.findViewById(R.id.image2);
 
 		detectThread = new HandlerThread("detect");
@@ -68,8 +65,9 @@ public class PhotoDetectActivity extends Activity {
 		detectHandler = new Handler(detectThread.getLooper());
 
 		imageView = (ImageView) findViewById(R.id.imageview);
-		curBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.test_people);
-		imageView.setImageBitmap(curBitmap);
+		curBitmap = BitmapFactory.decodeResource(getResources(),
+				R.drawable.test_people);
+		// imageView.setImageBitmap(curBitmap);
 		detecter = new FaceDetecter();
 		detecter.init(this, "f32ac3bb10b73ae18f5d289f27e45ee2");
 
@@ -80,54 +78,53 @@ public class PhotoDetectActivity extends Activity {
 				.diskCacheSize(100 * 1024 * 1024).diskCacheFileCount(300)
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		ImageLoader.getInstance().init(config);
-		
+
 		initShake();
-		
+
 	}
 
 	public class GetFaceLocation implements Runnable {
 		@Override
-		public void run(){
+		public void run() {
 			isrunning = true;
 			System.out.println("thread start!!");
-        	try {
-        		for(int i=0;i<10;i++){
-        			Thread.sleep(300);
-					Message message=new Message();  
-					message.what = i%(resbitmap.size()-1);
-					mHandler.sendMessage(message); 
-	                }
-        		Message message=new Message();  
-				message.what = resbitmap.size()-1;
-				mHandler.sendMessage(message);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			try {
+				for (int i = 0; i < 10; i++) {
+					Thread.sleep(300);
+					Message message = new Message();
+					message.what = i % (resbitmap.size() - 1);
+					mHandler.sendMessage(message);
 				}
-        	isrunning = false;
-            System.out.println("thread stop!!"); 
-            // TODO Auto-generated method stub  
-             
-        }  
+				Message message = new Message();
+				message.what = resbitmap.size() - 1;
+				mHandler.sendMessage(message);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			isrunning = false;
+			System.out.println("thread stop!!");
+			// TODO Auto-generated method stub
+
+		}
 	}
 
 	private void initShake() {
-		
+
 		mShakeListener = new ShakeListener(this);
 		mShakeListener.setOnShakeListener(shakeListener);
 	}
 
- OnShakeListenerCallBack shakeListener = new OnShakeListenerCallBack() {
-	 public void onShake() {
-		 OnDetect();
-		 System.out.println("Onshake  to detect");
-			
-		 
-	 }
+	OnShakeListenerCallBack shakeListener = new OnShakeListenerCallBack() {
+		@Override
+		public void onShake() {
+			OnDetect();
+			System.out.println("Onshake  to detect");
+
+		}
 	};
-	
-	
-	
+
+	@Override
 	public void onResume() {
 		super.onResume();
 		mShakeListener.start();
@@ -144,21 +141,21 @@ public class PhotoDetectActivity extends Activity {
 		mShakeListener.stop();
 		super.onStop();
 	}
-	
+
 	@Override
 	protected void onDestroy() {
 		mShakeListener.stop();
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
-		//释放图片资源
-		for(int i=0;i<resbitmap.size();i++){
-			if(!resbitmap.get(i).isRecycled()){
+		// 释放图片资源
+		for (int i = 0; i < resbitmap.size(); i++) {
+			if (!resbitmap.get(i).isRecycled()) {
 				resbitmap.get(i).recycle();
 			}
 		}
 		if ((curBitmap != null) && (!curBitmap.isRecycled()))
 			curBitmap.recycle();
-		
+
 	}
 
 	public static Bitmap getFaceInfoBitmap(Face[] faceinfos, Bitmap oribitmap) {
@@ -179,13 +176,15 @@ public class PhotoDetectActivity extends Activity {
 		return tmp;
 	}
 
-	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos,Bitmap backbitmap, Bitmap picsize) {
+	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos,
+			Bitmap backbitmap, Bitmap picsize) {
 		ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 
 		for (int i = 0; i < faceinfos.length; i++) {
 
 			// Bitmap tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
-			Bitmap tmp = Bitmap.createScaledBitmap(backbitmap,picsize.getWidth(), picsize.getHeight(), false);
+			Bitmap tmp = Bitmap.createScaledBitmap(backbitmap,
+					picsize.getWidth(), picsize.getHeight(), false);
 
 			Canvas localCanvas = new Canvas(tmp);
 			Paint localPaint = new Paint();
@@ -228,20 +227,23 @@ public class PhotoDetectActivity extends Activity {
 		case R.id.btnDrawer:
 			PhotoDetectActivity.this.finish();
 			break;
-			default:
-				break;
+		default:
+			break;
 		}
 	}
-	
-	public void OnDetect(){
+
+	public void OnDetect() {
+
 		if (!isrunning) {
 			isrunning = true;
-		}else {
-			Toast.makeText(PhotoDetectActivity.this, "正在筛选", Toast.LENGTH_LONG).show();
+		} else {
+			Toast.makeText(PhotoDetectActivity.this, "正在筛选", Toast.LENGTH_LONG)
+					.show();
 			return;
 		}
-		
-		Toast.makeText(PhotoDetectActivity.this, "正在进行人脸识别，请稍后····", Toast.LENGTH_LONG).show();
+
+		Toast.makeText(PhotoDetectActivity.this, "正在进行人脸识别，请稍后····",
+				Toast.LENGTH_LONG).show();
 		System.out.println("start detect");
 		detectHandler.post(new Runnable() {
 
@@ -254,8 +256,8 @@ public class PhotoDetectActivity extends Activity {
 
 						@Override
 						public void run() {
-							Toast.makeText(PhotoDetectActivity.this,
-									"未发现人脸信息", Toast.LENGTH_LONG).show();
+							Toast.makeText(PhotoDetectActivity.this, "未发现人脸信息",
+									Toast.LENGTH_LONG).show();
 							isrunning = false;
 						}
 					});
@@ -263,47 +265,65 @@ public class PhotoDetectActivity extends Activity {
 				}
 
 				final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
-				
-				BitmapDrawable draw = (BitmapDrawable) getResources().getDrawable(R.drawable.a111);
+
+				BitmapDrawable draw = (BitmapDrawable) getResources()
+						.getDrawable(R.drawable.a111);
 				Bitmap tmp = draw.getBitmap();
-				
-				for(int i=0;i<resbitmap.size();i++){
-					if(!resbitmap.get(i).isRecycled()){
+
+				for (int i = 0; i < resbitmap.size(); i++) {
+					if (!resbitmap.get(i).isRecycled()) {
 						resbitmap.get(i).recycle();
 					}
 				}
 				resbitmap.clear();
 				resbitmap = getFaceResBitmap(faceinfo, tmp, curBitmap);
-				
-				
-				int i = (int)(Math.random()*(resbitmap.size()));
-				int x = (int)(curBitmap.getWidth() * ((faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/2)>0?(faceinfo[i].left-(faceinfo[i].right-faceinfo[i].left)/2):0));
-				int y = (int)(curBitmap.getHeight() * ((faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2)>0?(faceinfo[i].top-(faceinfo[i].bottom-faceinfo[i].top)/2):0));
-                int width = (int)(curBitmap.getWidth() * (faceinfo[i].right-faceinfo[i].left)*2);
-				int height = (int)(curBitmap.getHeight() * (faceinfo[i].bottom-faceinfo[i].top)*2);
-				if(x + width > curBitmap.getWidth()){
+
+				int i = (int) (Math.random() * (resbitmap.size()));
+				int x = (int) (curBitmap.getWidth() * ((faceinfo[i].left - (faceinfo[i].right - faceinfo[i].left) / 2) > 0 ? (faceinfo[i].left - (faceinfo[i].right - faceinfo[i].left) / 2)
+						: 0));
+				int y = (int) (curBitmap.getHeight() * ((faceinfo[i].top - (faceinfo[i].bottom - faceinfo[i].top) / 2) > 0 ? (faceinfo[i].top - (faceinfo[i].bottom - faceinfo[i].top) / 2)
+						: 0));
+				int width = (int) (curBitmap.getWidth()
+						* (faceinfo[i].right - faceinfo[i].left) * 2);
+				int height = (int) (curBitmap.getHeight()
+						* (faceinfo[i].bottom - faceinfo[i].top) * 2);
+				if (x + width > curBitmap.getWidth()) {
 					width = curBitmap.getWidth() - x;
 				}
-				if(y + height > curBitmap.getHeight()){
+				if (y + height > curBitmap.getHeight()) {
 					height = curBitmap.getHeight() - y;
 				}
-				Bitmap luckybitmap = Bitmap.createBitmap(curBitmap, x,y, width,height);
-                 
-		        Bitmap bitmapframe = BitmapFactory.decodeResource(getResources(),R.drawable.xunzhang);
-		        
-		        Bitmap bitmap3 = Bitmap.createBitmap(bitmapframe.getWidth()*2/3, bitmapframe.getHeight()*2/3,Bitmap.Config.ARGB_4444);  
-		        Canvas canvas = new Canvas(bitmap3);
- 
-		        canvas.drawBitmap(luckybitmap, new Rect(0,0,luckybitmap.getWidth(),luckybitmap.getHeight()),
-		        		new Rect(bitmap3.getWidth()/4,bitmap3.getHeight()/4,
-		        				bitmap3.getWidth()*3/4,bitmap3.getHeight()*3/4), null);
-		        
-		        canvas.drawBitmap(bitmapframe, new Rect(0,0,bitmapframe.getWidth(),bitmapframe.getHeight()),
-		        		new Rect(0,0,bitmap3.getWidth(),bitmap3.getHeight()), null);
-				
-                resbitmap.add(bitmap3);
-                
-                Toast.makeText(PhotoDetectActivity.this, "人脸识别完成", Toast.LENGTH_LONG).show();
+				Bitmap luckybitmap = Bitmap.createBitmap(curBitmap, x, y,
+						width, height);
+
+				Bitmap bitmapframe = BitmapFactory.decodeResource(
+						getResources(), R.drawable.xunzhang);
+
+				Bitmap bitmap3 = Bitmap.createBitmap(
+						bitmapframe.getWidth() * 2 / 3,
+						bitmapframe.getHeight() * 2 / 3,
+						Bitmap.Config.ARGB_4444);
+				Canvas canvas = new Canvas(bitmap3);
+
+				canvas.drawBitmap(
+						luckybitmap,
+						new Rect(0, 0, luckybitmap.getWidth(), luckybitmap
+								.getHeight()), new Rect(bitmap3.getWidth() / 4,
+								bitmap3.getHeight() / 4,
+								bitmap3.getWidth() * 3 / 4,
+								bitmap3.getHeight() * 3 / 4), null);
+
+				canvas.drawBitmap(
+						bitmapframe,
+						new Rect(0, 0, bitmapframe.getWidth(), bitmapframe
+								.getHeight()),
+						new Rect(0, 0, bitmap3.getWidth(), bitmap3.getHeight()),
+						null);
+
+				resbitmap.add(bitmap3);
+
+				Toast.makeText(PhotoDetectActivity.this, "人脸识别完成",
+						Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 
 					@Override
@@ -317,11 +337,9 @@ public class PhotoDetectActivity extends Activity {
 		});
 	}
 
-
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-
 
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {

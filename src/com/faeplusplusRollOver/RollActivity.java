@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,13 +33,13 @@ public class RollActivity extends Activity {
 	private Bitmap curBitmap;
 	private final static int REQUEST_GET_PHOTO = 1;
 	ImageView imageView = null;
+	ImageView imgreturn = null;
 	HandlerThread detectThread = null;
 	Handler detectHandler = null;
 	Button button = null;
 	FaceDetecter detecter = null;
 
 	private ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +48,28 @@ public class RollActivity extends Activity {
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_roll);
 
-		
 		detectThread = new HandlerThread("detect");
 		detectThread.start();
 		detectHandler = new Handler(detectThread.getLooper());
-		
+
 		detecter = new FaceDetecter();
 		detecter.init(this, "f32ac3bb10b73ae18f5d289f27e45ee2");
-		
 
 		imageView = (ImageView) findViewById(R.id.imageview);
-		curBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.demo);
-		imageView.setImageBitmap(curBitmap);
-		
+		curBitmap = BitmapFactory.decodeResource(getResources(),
+				R.drawable.demo);
+		// imageView.setImageBitmap(curBitmap);
+
+		imgreturn = (ImageView) super.findViewById(R.id.btnDrawer);
+		imgreturn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				RollActivity.this.finish();
+			}
+		});
+
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				this).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
@@ -68,26 +78,25 @@ public class RollActivity extends Activity {
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 
 		ImageLoader.getInstance().init(config);
-		
-		OnDetect();
-	}
 
+		// OnDetect();
+	}
 
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		detecter.release(this);// 释放引擎
-		
-		for(int i=0;i<resbitmap.size();i++){
-			if(!resbitmap.get(i).isRecycled()){
+
+		for (int i = 0; i < resbitmap.size(); i++) {
+			if (!resbitmap.get(i).isRecycled()) {
 				resbitmap.get(i).recycle();
 			}
 		}
-		
+
 		if ((curBitmap != null) && (!curBitmap.isRecycled()))
 			curBitmap.recycle();
-		
+
 	}
 
 	public static Bitmap getFaceInfoBitmap(Face[] faceinfos, Bitmap oribitmap) {
@@ -109,23 +118,28 @@ public class RollActivity extends Activity {
 		return tmp;
 	}
 
-	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos, Bitmap oribitmap) {
+	public static ArrayList<Bitmap> getFaceResBitmap(Face[] faceinfos,
+			Bitmap oribitmap) {
 		ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 
-		int x,y,width,height = 0;
+		int x, y, width, height = 0;
 		for (int i = 0; i < faceinfos.length; i++) {
 			// Bitmap tmp = oribitmap.copy(Bitmap.Config.ARGB_8888, true);
-			x = (int)(oribitmap.getWidth() * ((faceinfos[i].left-(faceinfos[i].right-faceinfos[i].left)/3)>0?(faceinfos[i].left-(faceinfos[i].right-faceinfos[i].left)/3):0));
-			y = (int)(oribitmap.getHeight() * ((faceinfos[i].top-(faceinfos[i].bottom-faceinfos[i].top)/2)>0?(faceinfos[i].top-(faceinfos[i].bottom-faceinfos[i].top)/2):0));
-            width = (int)(oribitmap.getWidth() * (faceinfos[i].right-faceinfos[i].left)*5/3);
-			height = (int)(oribitmap.getHeight() * (faceinfos[i].bottom-faceinfos[i].top)*2);
-			if(x + width > oribitmap.getWidth()){
+			x = (int) (oribitmap.getWidth() * ((faceinfos[i].left - (faceinfos[i].right - faceinfos[i].left) / 3) > 0 ? (faceinfos[i].left - (faceinfos[i].right - faceinfos[i].left) / 3)
+					: 0));
+			y = (int) (oribitmap.getHeight() * ((faceinfos[i].top - (faceinfos[i].bottom - faceinfos[i].top) / 2) > 0 ? (faceinfos[i].top - (faceinfos[i].bottom - faceinfos[i].top) / 2)
+					: 0));
+			width = (int) (oribitmap.getWidth()
+					* (faceinfos[i].right - faceinfos[i].left) * 5 / 3);
+			height = (int) (oribitmap.getHeight()
+					* (faceinfos[i].bottom - faceinfos[i].top) * 2);
+			if (x + width > oribitmap.getWidth()) {
 				width = oribitmap.getWidth() - x;
 			}
-			if(y + height > oribitmap.getHeight()){
+			if (y + height > oribitmap.getHeight()) {
 				height = oribitmap.getHeight() - y;
 			}
-			Bitmap tmp = Bitmap.createBitmap(oribitmap, x,y, width,height);
+			Bitmap tmp = Bitmap.createBitmap(oribitmap, x, y, width, height);
 			resbitmap.add(tmp);
 		}
 		return resbitmap;
@@ -148,29 +162,32 @@ public class RollActivity extends Activity {
 		switch (view.getId()) {
 		case R.id.btnpick:
 
-			startActivityForResult(new Intent(RollActivity.this,SelectPictureActivity.class), REQUEST_GET_PHOTO);
+			startActivityForResult(new Intent(RollActivity.this,
+					SelectPictureActivity.class), REQUEST_GET_PHOTO);
 			// startActivityForResult(new
 			// Intent("android.intent.action.PICK",MediaStore.Images.Media.EXTERNAL_CONTENT_URI),
 			// REQUEST_GET_PHOTO);
 			break;
 		case R.id.btnnext:
-			if (resbitmap.size()<=0) {
+			if (resbitmap.size() <= 0) {
 				break;
 			}
-			Intent rollIntent = new Intent(RollActivity.this,RollActivityTurn.class);
+			Intent rollIntent = new Intent(RollActivity.this,
+					RollActivityTurn.class);
 			rollIntent.putExtra("resbitmap", resbitmap);
 			startActivity(rollIntent);
 			break;
-		//case R.id.btnDrawer:
-			//RollActivity.this.finish();
-			//break;
-			default:
-				break;
+		// case R.id.btnDrawer:
+		// RollActivity.this.finish();
+		// break;
+		default:
+			break;
 		}
 	}
-	
-	public void OnDetect(){
-		Toast.makeText(RollActivity.this, "正在识别图片,请稍后······", Toast.LENGTH_LONG).show();
+
+	public void OnDetect() {
+		Toast.makeText(RollActivity.this, "正在识别图片,请稍后······", Toast.LENGTH_LONG)
+				.show();
 		System.out.println("start detect");
 		detectHandler.post(new Runnable() {
 
@@ -183,21 +200,23 @@ public class RollActivity extends Activity {
 
 						@Override
 						public void run() {
-							Toast.makeText(RollActivity.this,"未发现人脸信息", Toast.LENGTH_LONG).show();
+							Toast.makeText(RollActivity.this, "未发现人脸信息",
+									Toast.LENGTH_LONG).show();
 						}
 					});
 					return;
 				}
-				
+
 				final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
-				for(int i=0;i<resbitmap.size();i++){
-					if(!resbitmap.get(i).isRecycled()){
+				for (int i = 0; i < resbitmap.size(); i++) {
+					if (!resbitmap.get(i).isRecycled()) {
 						resbitmap.get(i).recycle();
 					}
 				}
 
-				resbitmap = getFaceResBitmap(faceinfo,curBitmap);
-				Toast.makeText(RollActivity.this, "识别成功,可以翻牌了！！！", Toast.LENGTH_LONG).show();
+				resbitmap = getFaceResBitmap(faceinfo, curBitmap);
+				Toast.makeText(RollActivity.this, "识别成功,可以翻牌了！！！",
+						Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
@@ -208,8 +227,8 @@ public class RollActivity extends Activity {
 			}
 		});
 	}
-	
-	
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
 
@@ -224,7 +243,7 @@ public class RollActivity extends Activity {
 					curBitmap = getScaledBitmap(str, 600);
 					imageView.setImageBitmap(curBitmap);
 					OnDetect();
-					
+
 				}
 				break;
 			}
