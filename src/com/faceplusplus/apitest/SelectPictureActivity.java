@@ -33,6 +33,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.megvii.apitest.R;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -41,6 +42,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import android.view.MotionEvent;
 
 
 public class SelectPictureActivity extends Activity {
@@ -74,7 +76,7 @@ public class SelectPictureActivity extends Activity {
     /**
      * 已选择的图片
      */
-    private String selectedPicture = null;
+    private String selectedPicture = "";
     private String cameraPath = null;
     private ViewHolder holder = null;
 
@@ -143,6 +145,12 @@ public class SelectPictureActivity extends Activity {
      * @param v
      */
     public void ok(View v) {
+    	if (selectedPicture.equals(""))
+    	{
+    		//btn_ok.setEnabled(false);
+    		Toast.makeText(SelectPictureActivity.this, "请选择一张图片", Toast.LENGTH_LONG).show();
+    		return;
+    	}
         Intent data = new Intent();
         data.putExtra(INTENT_SELECTED_PICTURE, selectedPicture);
         setResult(RESULT_OK, data);
@@ -170,7 +178,6 @@ public class SelectPictureActivity extends Activity {
                 }
             }
         });
-
         listview = (ListView) findViewById(R.id.listview);
         folderAdapter = new FolderAdapter();
         listview.setAdapter(folderAdapter);
@@ -188,6 +195,12 @@ public class SelectPictureActivity extends Activity {
         getThumbnail();
     }
 
+    public boolean onTouchEvent(MotionEvent event)
+    {
+    	hideListAnimation();
+        return true;
+    }
+    
     /**
      * 使用相机拍照
      *

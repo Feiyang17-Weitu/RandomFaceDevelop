@@ -30,11 +30,11 @@ public class RollActivityTurn extends Activity {
 	private ImageView imgView;
 	private ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
 	// 地址
-
 	private final boolean bool = false;
 	private int count;
-
 	private ImageView imgreturn;
+	private int mPosition = 0;
+	private boolean mboFisrt = true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +44,7 @@ public class RollActivityTurn extends Activity {
 		setContentView(R.layout.activity_rollturn);
 
 		imgreturn = (ImageView) super.findViewById(R.id.btnDrawer);
-
 		imgreturn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -58,6 +56,7 @@ public class RollActivityTurn extends Activity {
 		resbitmap = (ArrayList<Bitmap>) it.getSerializableExtra("resbitmap");
 
 		count = resbitmap.size() > 9 ? 9 : resbitmap.size();
+
 		List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
 		for (int i = 0; i < count; i++) {
 			Map<String, Object> listItem = new HashMap<String, Object>();
@@ -78,6 +77,29 @@ public class RollActivityTurn extends Activity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
+				if (arg2 == mPosition && !mboFisrt) {
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							RollActivityTurn.this);
+					// 设置Title的内容
+					builder.setTitle("筛选结果");
+					// 设置Content来显示一个信息
+					builder.setMessage("完事了，别点了");
+					// 设置一个PositiveButton
+					builder.setPositiveButton("确定",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.cancel();
+									// dialog.dismiss();
+									// simpleAdapter.notifyDataSetChanged();
+								}
+							});
+					builder.show();
+					return;
+				}
+				mPosition = arg2;
+				mboFisrt = false;
 				// TODO Auto-generated method stub
 				// imgView.setImageResource(R.drawable.test1);
 				Animation animation = AnimationUtils.loadAnimation(

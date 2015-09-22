@@ -2,11 +2,13 @@ package com.faceplusplus.apitest;
 
 import java.util.ArrayList;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -15,10 +17,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.TextView;
 
 import com.faceplusplus.api.FaceDetecter;
 import com.faceplusplus.api.FaceDetecter.Face;
@@ -29,6 +33,8 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 
 public class PhotoDetectActivity extends Activity {
 
@@ -42,9 +48,13 @@ public class PhotoDetectActivity extends Activity {
 	private ImageView image;
 	private ShakeListener mShakeListener = null;
 	private boolean isrunning = false;
+	private ImageView filter = null;
+	private ImageView btnGoBack = null;
+//	private boolean isFinished = false;
+	private TextView text = null;
 
 	private ArrayList<Bitmap> resbitmap = new ArrayList<Bitmap>();
-
+	private Canvas canvas = null;
 	public Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -53,9 +63,20 @@ public class PhotoDetectActivity extends Activity {
 		}
 	};
 
+	Handler mH = new Handler() {
+		public void handleMessage(Message msg) {
+			if (resbitmap.size() != 0)
+				Toast.makeText(PhotoDetectActivity.this, "识别完成", 3000).show();
+			filter.setEnabled(true);
+			btnGoBack.setEnabled(true);
+			text.setText((resbitmap.size() - 1) + "张人脸被识别");
+		};
+	};
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("chenhj", "onCreate");
 		setContentView(R.layout.activity_photo_detect);
 
 		image = (ImageView) super.findViewById(R.id.image2);
@@ -67,10 +88,10 @@ public class PhotoDetectActivity extends Activity {
 		imageView = (ImageView) findViewById(R.id.imageview);
 		curBitmap = BitmapFactory.decodeResource(getResources(),
 				R.drawable.test_people);
-		// imageView.setImageBitmap(curBitmap);
+		imageView.setImageBitmap(curBitmap);
 		detecter = new FaceDetecter();
 		detecter.init(this, "f32ac3bb10b73ae18f5d289f27e45ee2");
-
+		
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				this).threadPriority(Thread.NORM_PRIORITY - 2)
 				.denyCacheImageMultipleSizesInMemory()
@@ -80,7 +101,9 @@ public class PhotoDetectActivity extends Activity {
 		ImageLoader.getInstance().init(config);
 
 		initShake();
-
+		filter = (ImageView) findViewById(R.id.detect);
+		btnGoBack = (ImageView) findViewById(R.id.btnDrawer);
+		text = (TextView) findViewById(R.id.text_tip);
 	}
 
 	public class GetFaceLocation implements Runnable {
@@ -103,6 +126,7 @@ public class PhotoDetectActivity extends Activity {
 				e.printStackTrace();
 			}
 			isrunning = false;
+			mH.sendEmptyMessage(0);
 			System.out.println("thread stop!!");
 			// TODO Auto-generated method stub
 
@@ -116,18 +140,19 @@ public class PhotoDetectActivity extends Activity {
 	}
 
 	OnShakeListenerCallBack shakeListener = new OnShakeListenerCallBack() {
-		@Override
 		public void onShake() {
+			if (canvas != null)
+				canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 			OnDetect();
 			System.out.println("Onshake  to detect");
 
 		}
 	};
 
-	@Override
 	public void onResume() {
 		super.onResume();
 		mShakeListener.start();
+//		isFinished = false;
 	}
 
 	@Override
@@ -155,6 +180,8 @@ public class PhotoDetectActivity extends Activity {
 		}
 		if ((curBitmap != null) && (!curBitmap.isRecycled()))
 			curBitmap.recycle();
+
+//		isFinished = true;
 
 	}
 
@@ -222,7 +249,11 @@ public class PhotoDetectActivity extends Activity {
 					SelectPictureActivity.class), REQUEST_GET_PHOTO);
 			break;
 		case R.id.detect:
+			if (canvas != null)
+				canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+			Log.d("chenhj", "ID--->" + Thread.currentThread().getId());
 			OnDetect();
+			// filter.setEnabled(true);
 			break;
 		case R.id.btnDrawer:
 			PhotoDetectActivity.this.finish();
@@ -233,36 +264,53 @@ public class PhotoDetectActivity extends Activity {
 	}
 
 	public void OnDetect() {
-
 		if (!isrunning) {
 			isrunning = true;
 		} else {
-			Toast.makeText(PhotoDetectActivity.this, "正在筛选", Toast.LENGTH_LONG)
-					.show();
+
+			filter.setEnabled(false);
+			btnGoBack.setEnabled(false);
+			//Toast.makeText(PhotoDetectActivity.this, "正在筛选", Toast.LENGTH_LONG)
+			//		.show();
 			return;
 		}
-
+		btnGoBack.setEnabled(false);
+		filter.setEnabled(false);
 		Toast.makeText(PhotoDetectActivity.this, "正在进行人脸识别，请稍后····",
 				Toast.LENGTH_LONG).show();
 		System.out.println("start detect");
+		Log.d("chenhj", "1--->" + System.currentTimeMillis());
 		detectHandler.post(new Runnable() {
 
 			@Override
 			public void run() {
+				
+//				if (isFinished) {
+//					return;
+//				}
+
+				Log.d("chenhj", "2--->" + System.currentTimeMillis());
 
 				Face[] faceinfo = detecter.findFaces(curBitmap);// 进行人脸检测
+
+				Log.d("chenhj", "3--->" + System.currentTimeMillis());
 				if (faceinfo == null) {
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
+							Log.d("chenhj", "ID22--->" + Thread.currentThread().getId());
 							Toast.makeText(PhotoDetectActivity.this, "未发现人脸信息",
 									Toast.LENGTH_LONG).show();
 							isrunning = false;
+							resbitmap.clear();
+							mH.sendEmptyMessage(0);
 						}
 					});
 					return;
 				}
+				
+				
 
 				final Bitmap bit = getFaceInfoBitmap(faceinfo, curBitmap);
 
@@ -277,6 +325,8 @@ public class PhotoDetectActivity extends Activity {
 				}
 				resbitmap.clear();
 				resbitmap = getFaceResBitmap(faceinfo, tmp, curBitmap);
+				
+				Log.d("chenhj", "4--->" + System.currentTimeMillis());
 
 				int i = (int) (Math.random() * (resbitmap.size()));
 				int x = (int) (curBitmap.getWidth() * ((faceinfo[i].left - (faceinfo[i].right - faceinfo[i].left) / 2) > 0 ? (faceinfo[i].left - (faceinfo[i].right - faceinfo[i].left) / 2)
@@ -303,7 +353,8 @@ public class PhotoDetectActivity extends Activity {
 						bitmapframe.getWidth() * 2 / 3,
 						bitmapframe.getHeight() * 2 / 3,
 						Bitmap.Config.ARGB_4444);
-				Canvas canvas = new Canvas(bitmap3);
+
+				canvas = new Canvas(bitmap3);
 
 				canvas.drawBitmap(
 						luckybitmap,
@@ -321,19 +372,23 @@ public class PhotoDetectActivity extends Activity {
 						null);
 
 				resbitmap.add(bitmap3);
+				
+				Log.d("chenhj", "5--->" + System.currentTimeMillis());
 
-				Toast.makeText(PhotoDetectActivity.this, "人脸识别完成",
-						Toast.LENGTH_LONG).show();
 				runOnUiThread(new Runnable() {
 
 					@Override
 					public void run() {
+						Log.d("chenhj", "ID--->" + Thread.currentThread().getId());
 						imageView.setImageBitmap(bit);
+
 						new Thread(new GetFaceLocation()).start();
 						System.gc();
 					}
 				});
+
 			}
+
 		});
 	}
 

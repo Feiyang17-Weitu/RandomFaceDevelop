@@ -5,62 +5,63 @@
     android:background="#fff"
     tools:context=".PhotoDetectActivity" >
 
-        <RelativeLayout
-	        style="@style/TitleBar"
-	        android:id="@+id/title_bar"
-	        android:layout_alignParentTop="true">
-	        <ImageView
-	            android:id="@+id/btnDrawer"
-	            style="@style/TitleBarLeftIcon_back"
-	            android:layout_height="wrap_content"
-	            android:layout_width="wrap_content"
-	            android:padding="10dp"
-	            android:onClick="onClick"
-	            />
-	        <TextView
-	            android:id="@+id/bar_title"
-	            style="@style/Title"
-	            android:text="你拍我选"
-	            android:layout_marginRight="10dp"
-	            android:textColor="#fe448a"
-	            />
-	    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/title_bar"
+        style="@style/TitleBar"
+        android:layout_alignParentTop="true" >
 
+        <ImageView
+            android:id="@+id/btnDrawer"
+            style="@style/TitleBarLeftIcon_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:padding="10dp" />
 
-   <RelativeLayout
+        <TextView
+            android:id="@+id/bar_title"
+            style="@style/Title"
+            android:layout_marginRight="10dp"
+            android:text="你拍我选"
+            android:textColor="#fe448a" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="320dp" 
-        android:layout_marginTop="59dp"
+        android:layout_height="310dp"
+        android:layout_alignParentTop="true"
         android:layout_centerInParent="true"
-        android:layout_alignParentTop="true">
+        android:layout_marginTop="59dp" >
 
         <ImageView
             android:id="@+id/imageview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <ImageView
             android:id="@+id/image2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"/>
-        
-
+            android:layout_alignParentTop="true" />
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout_bing"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="150dp"
-        >
-        
-    </LinearLayout>
+        android:layout_below="@id/relativeLayout1"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_tip"
+            android:text="0张人脸被识别" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -87,7 +88,7 @@
             android:onClick="onClick"
             android:src="@drawable/arrow2"
             android:text="检测" />
-        
+
         <ImageView
             android:id="@+id/btnShake"
             android:layout_width="50dp"
@@ -95,7 +96,7 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:src="@drawable/share"
-            android:text="摇一摇" /> 
+            android:text="摇一摇" />
     </LinearLayout>
 
     <LinearLayout
@@ -106,4 +107,5 @@
         android:layout_marginRight="129dp"
         android:layout_marginTop="36dp" >
     </LinearLayout>
+
 </RelativeLayout>

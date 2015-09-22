@@ -3,6 +3,8 @@ package com.faeplusplusRollOver;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -170,6 +172,22 @@ public class RollActivity extends Activity {
 			break;
 		case R.id.btnnext:
 			if (resbitmap.size() <= 0) {
+				AlertDialog.Builder builder = new AlertDialog.Builder(
+						RollActivity.this);
+				// 设置Title的内容
+				builder.setTitle("筛选结果");
+				// 设置Content来显示一个信息
+				builder.setMessage("根本没有什么人脸，别点了");
+				// 设置一个PositiveButton
+				builder.setPositiveButton("确定",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.cancel();
+							}
+						});
+				builder.show();
 				break;
 			}
 			Intent rollIntent = new Intent(RollActivity.this,

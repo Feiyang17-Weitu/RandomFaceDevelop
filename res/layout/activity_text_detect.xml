@@ -38,7 +38,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:singleLine="true"
-            android:hint="点击回车生成一个选项" />
+            android:hint="点击“回车”或者“下一页”生成一个选项" />
 
         <GridView
             android:id="@+id/gridView1"
