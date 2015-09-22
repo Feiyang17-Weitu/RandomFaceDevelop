@@ -83,7 +83,7 @@ public class RollActivityTurn extends Activity {
 					// 设置Title的内容
 					builder.setTitle("筛选结果");
 					// 设置Content来显示一个信息
-					builder.setMessage("完事了，别点了");
+					builder.setMessage("请检查是否重复点击或者全部点完了");
 					// 设置一个PositiveButton
 					builder.setPositiveButton("确定",
 							new DialogInterface.OnClickListener() {

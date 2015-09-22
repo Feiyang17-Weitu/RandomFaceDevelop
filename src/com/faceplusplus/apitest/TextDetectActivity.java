@@ -134,6 +134,11 @@ public class TextDetectActivity extends Activity {
 					textEditItem.clear();
 					simpleAdapter.notifyDataSetChanged();
 				}
+				if (textEditItem.size() == 0) {
+					Toast.makeText(getApplication(), "备选人数不能为空",
+							Toast.LENGTH_LONG).show();
+					return;
+				}
 				if (!editText2.getText().toString().equals("")) {
 					editText2.setText("");
 				}
@@ -215,8 +220,9 @@ public class TextDetectActivity extends Activity {
 		@Override
 		public void onClick(View view) {
 
-			if (editText2.getText().toString().equals("")) {
-				Toast.makeText(getApplication(), "请完善信息", Toast.LENGTH_LONG)
+			if (editText2.getText().toString().equals("")
+					|| editText2.getText().toString().equals("0")) {
+				Toast.makeText(getApplication(), "筛选人数不能为空", Toast.LENGTH_LONG)
 						.show();
 				return;
 			}
@@ -232,6 +238,7 @@ public class TextDetectActivity extends Activity {
 						.show();
 				return;
 			}
+
 			/*
 			 * if (editText3.getText().toString().equals("")) {
 			 * Toast.makeText(getApplication(), "主题不能为空",
@@ -241,14 +248,15 @@ public class TextDetectActivity extends Activity {
 			ArrayList<HashMap<String, String>> listTmp = textEditItem;
 			String strDetectResult = "";
 			int iIndex = 0;
+			strDetectResult += "结果如下:\n";
 			while (selectNum > 0) {
 				Random random = new Random();
 				iIndex = random.nextInt(listTmp.size());
 				strDetectResult1 = listTmp.get(iIndex).get("itemText");
 				if (1 == selectNum) {
-					strDetectResult += strDetectResult1;
+					strDetectResult += (strDetectResult1 + "\n");
 				} else {
-					strDetectResult += (strDetectResult1 + " ");
+					strDetectResult += (strDetectResult1 + "\n");
 				}
 				listTmp.remove(iIndex);
 				selectNum--;
